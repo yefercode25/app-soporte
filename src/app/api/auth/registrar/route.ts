@@ -1,9 +1,9 @@
-import { hashPassword, registrarUsuarioScheme, prisma } from '@/lib';
+import { hashPassword, registrarUsuarioSchema, prisma } from '@/lib';
 import { NextResponse, NextRequest } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { email, name, password, lastName } = await registrarUsuarioScheme.validate(await req.json());
+    const { email, name, password, lastName } = await registrarUsuarioSchema.validate(await req.json());
     
     const findUserByEmail = await prisma.user?.findFirst({ where: { email }});
     if (findUserByEmail) {

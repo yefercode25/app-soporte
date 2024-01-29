@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
-import "./globals.css";
 import { Sidebar } from "@/components";
+import { Toaster } from "sonner";
+import "./globals.css";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -28,6 +29,16 @@ export default function RootLayout({
               {children}
             </div>
           </div>
+          <Toaster 
+            richColors
+            closeButton
+            visibleToasts={5}
+            position={'bottom-right'}
+            duration={5000}
+            style={{
+              fontFamily: 'Montserrat',
+            }}
+          />
         </div>
       </body>
     </html>

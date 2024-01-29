@@ -1,3 +1,3 @@
 export * from './IniciarSesionForm';
-export * from './RegistrarUsuario';
+export * from './RegistrarUsuarioForm';
 export * from './fields';
