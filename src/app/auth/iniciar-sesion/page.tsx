@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import { IoLockClosedOutline, IoLogoGoogle } from "react-icons/io5";
 
 export const metadata: Metadata = {
@@ -46,7 +47,7 @@ export default function LoginPage() {
 
         <div className="text-center">
           <span className="text-xs text-gray-400 font-semibold mr-2">¿No tienes una cuenta?</span>
-          <a href="#" className="text-xs font-semibold text-blue-600">Registrate aquí</a>
+          <Link href="/auth/registrar" className="text-xs font-semibold text-blue-600">Registrate aquí</Link>
         </div>
       </div>
     </div>

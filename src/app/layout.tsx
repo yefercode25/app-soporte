@@ -24,7 +24,7 @@ export default function RootLayout({
         <div className="min-h-screen bg-gray-200">
           <Sidebar />
           <div className="xl:p-4 xl:ml-80">
-            <div className="px-5 py-5 xl:rounded-xl w-full text-gray-800 h-[calc(100lvh-32px)] xl:shadow bg-white">
+            <div className="px-5 py-5 xl:rounded-xl w-full text-gray-800 h-[calc(100lvh-32px)] xl:shadow bg-white overflow-y-auto scrollbar">
               {children}
             </div>
           </div>
