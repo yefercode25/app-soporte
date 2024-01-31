@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google";
 import { Sidebar } from "@/components";
 import { Toaster } from "sonner";
 import "./globals.css";
+import { AuthProvider } from "@/providers";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   description: "Aplicación web para llevar el soporte de las actividades diarias.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -22,24 +23,26 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={montserrat.className}>
-        <div className="min-h-screen bg-gray-200">
-          <Sidebar />
-          <div className="xl:p-4 xl:ml-80">
-            <div className="px-5 py-5 xl:rounded-xl w-full text-gray-800 h-[calc(100lvh-32px)] xl:shadow bg-white overflow-y-auto scrollbar">
-              {children}
+        <AuthProvider>
+          <div className="min-h-screen bg-gray-200">
+            <Sidebar />
+            <div className="xl:p-4 xl:ml-80">
+              <div className="px-5 py-5 xl:rounded-xl w-full text-gray-800 h-[calc(100lvh-32px)] xl:shadow bg-white overflow-y-auto scrollbar">
+                {children}
+              </div>
             </div>
+            <Toaster
+              richColors
+              closeButton
+              visibleToasts={5}
+              position={'bottom-right'}
+              duration={3000}
+              style={{
+                fontFamily: 'Montserrat',
+              }}
+            />
           </div>
-          <Toaster 
-            richColors
-            closeButton
-            visibleToasts={5}
-            position={'bottom-right'}
-            duration={5000}
-            style={{
-              fontFamily: 'Montserrat',
-            }}
-          />
-        </div>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -6,7 +6,7 @@ import { Input } from '@/components';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registrarUsuarioSchema } from "@/lib/yupSchemas";
-import { toastAlert } from "@/utils";
+import { toastAlert } from "@/utils/toastAlert";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -22,11 +22,12 @@ export const RegistrarUsuarioForm = () => {
   const router = useRouter();
 
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
-  const { register, handleSubmit, formState: { errors } } = useForm<IRegistrarUsuario>({
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<IRegistrarUsuario>({
     resolver: yupResolver(registrarUsuarioSchema)
   });
 
   const onSubmit = async (data: IRegistrarUsuario) => {
+    setIsSendingData(true);
     const createUser = fetch('/api/auth/registrar', {
       method: 'POST',
       body: JSON.stringify(data)
@@ -42,6 +43,8 @@ export const RegistrarUsuarioForm = () => {
 
     createUser.then((res) => {
       if(res.status === 201) {
+        reset();
+        setIsSendingData(false);
         router.push('/auth/iniciar-sesion');
       }
     });
@@ -98,6 +101,7 @@ export const RegistrarUsuarioForm = () => {
         icon={<IoLockOpenOutline />}
         {...register('repeatPassword')}
         errors={errors}
+        disabled={isSendingData}
       />
       <button type="submit" className="block w-full bg-blue-600 mt-4 py-2 rounded-md text-white font-semibold mb-2 hover:bg-blue-700 transition-all">Realizar registro</button>
 

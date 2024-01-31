@@ -14,3 +14,13 @@ export const registrarUsuarioSchema = yup.object().shape({
     .oneOf([yup.ref('password')], 'Las contraseñas deben coincidir.')
     .required('La confirmación de la contraseña es requerida.'),
 });
+
+export const iniciarSesionSchema = yup.object().shape({
+  email: yup.string()
+    .email('El correo electrónico no es válido.')
+    .required('Ingresa tu correo electrónico.'),
+  password: yup.string()
+    .min(6, 'La contraseña debe tener al menos 6 caracteres.')
+    .required('Ingresa tu contraseña.'),
+  rememberMe: yup.boolean().optional(),
+});
