@@ -1,4 +1,4 @@
-import { prisma } from '@/lib';
+import prisma from '@/lib/prisma';
 import { crearActividad } from '@/lib/yupSchemas';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';

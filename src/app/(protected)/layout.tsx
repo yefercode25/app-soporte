@@ -1,10 +1,6 @@
-import { AuthControl } from "@/components";
-import { verifyJWT } from "@/utils/jwt";
-import { toastAlert } from "@/utils/toastAlert";
+import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default async function ProtectedLayout({
   children
