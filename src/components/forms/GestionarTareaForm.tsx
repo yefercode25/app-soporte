@@ -1,0 +1,121 @@
+'use client';
+
+import { Input } from '@/components';
+import { crearActividad } from '@/lib/yupSchemas';
+import { toastAlert } from '@/utils/toastAlert';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { IoAlbumsOutline, IoCalendarClearOutline, IoTicketOutline, IoTimerOutline } from 'react-icons/io5';
+
+interface IGestionarTarea {
+  title: string;
+  observation?: string;
+  createdAt: string;
+  posponedAt?: string;
+  priority: 'low' | 'normal' | 'high';
+  userId: string;
+  employeeId?: string;
+}
+
+export const GestionarTareaForm = () => {
+  const session = useSession();
+  const router = useRouter();
+  const [isSendingData, setIsSendingData] = useState<boolean>(false);
+  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<IGestionarTarea>({
+    resolver: yupResolver(crearActividad)
+  });
+
+  useEffect(() => {
+    setValue('userId', session?.data?.user?.id || '');
+  }, [session, setValue]);
+
+  const onSubmit = async (data: IGestionarTarea) => {
+    setIsSendingData(true);
+
+    const response = fetch('/api/actividades', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+
+    toastAlert({ 
+      tipo: 'promise', 
+      loadingText: 'Registrando actividad...',
+      successText: 'Actividad registrada correctamente',
+      errorText: 'Error al registrar la actividad',
+      promise: response
+    });
+
+    if((await response).status === 201) {
+      reset();
+      router.push('/actividades');
+    }
+
+    setIsSendingData(false);
+  };
+
+  return (
+    <form
+      className="mt-4"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <Input
+        placeholder="Ejm. Revisar el correo electrónico de la empresa."
+        title="Título de la tarea"
+        type="text"
+        id="title"
+        icon={<IoTicketOutline />}
+        {...register('title')}
+        errors={errors}
+      />
+      <Input
+        placeholder="Ejm. Se notifica que el almacenamiento se está agotando."
+        title="Observación"
+        type="textarea"
+        id="observation"
+        icon={<IoAlbumsOutline />}
+        {...register('observation')}
+        errors={errors}
+      />
+      <Input
+        title="Fecha de creación"
+        type="datetime-local"
+        id="createdAt"
+        icon={<IoCalendarClearOutline />}
+        {...register('createdAt')}
+        errors={errors}
+      />
+      <Input
+        title="Prioridad"
+        type="select"
+        id="priority"
+        icon={<IoAlbumsOutline />}
+        {...register('priority')}
+        errors={errors}
+        placeholder="Selecciona la prioridad"
+        selectOptions={[
+          { value: 'low', label: 'Baja' },
+          { value: 'normal', label: 'Normal' },
+          { value: 'high', label: 'Alta' }
+        ]}
+        onChange={(e) => {
+          register('priority').onChange(e);
+          setValue('priority', e.target.value as any);
+        }}
+      />
+      <Input
+        title="La tarea se pospone hasta (opcional)"
+        type="datetime-local"
+        id="posponedAt"
+        icon={<IoTimerOutline />}
+        {...register('posponedAt')}
+        errors={errors}
+      />
+      <div className="mb-3">
+        <button type='submit' disabled={isSendingData} className="mb-2 block w-full text-center text-white bg-blue-600 hover:bg-blue-700 px-2 py-1.5 rounded-md">Registrar actividad</button>
+      </div>
+    </form>
+  )
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link"
-import { IoAtOutline, IoLockClosedOutline, IoLogoGoogle } from "react-icons/io5";
+import { IoAtOutline, IoLockClosedOutline } from "react-icons/io5";
 import { Input, SignInGoogle } from '@/components';
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -9,8 +9,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { iniciarSesionSchema } from "@/lib/yupSchemas";
 import { toastAlert } from "@/utils/toastAlert";
-import { APIResponse, IniciarSesion, User } from "@/types";
-import { setCookie } from "cookies-next";
 import { signIn } from "next-auth/react";
 
 interface IIniciarSesion {
@@ -38,8 +36,6 @@ export const IniciarSesionForm = () => {
       callbackUrl: `/`,
       redirect: true
     });
-    
-    console.log(result)
 
     if([401, 401].includes(result?.status!)) {
       toastAlert({ tipo: 'error', title: 'Error al iniciar sesion', description: result?.error || 'Credenciales incorrectas' });

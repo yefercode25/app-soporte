@@ -1,13 +1,16 @@
 'use client';
 
 import Link from "next/link"
-import { IoHomeOutline, IoDocumentTextOutline, IoExitOutline, IoConstructOutline, IoApps, IoTicketOutline } from "react-icons/io5"
+import { IoHomeOutline, IoDocumentTextOutline, IoExitOutline, IoConstructOutline, IoApps, IoTicketOutline, IoPersonAddOutline, IoDesktopOutline, IoGlobeOutline } from "react-icons/io5"
 import { SidebarLink } from "."
 import { useState } from "react";
 
 const generalMenuItems = [
   { titulo: 'Inicio', icono: <IoHomeOutline />, ruta: '/' },
   { titulo: 'Actividades', icono: <IoTicketOutline />, ruta: '/actividades' },
+  { titulo: 'Funcionarios', icono: <IoPersonAddOutline />, ruta: '/funcionarios' },
+  { titulo: 'Equipos', icono: <IoDesktopOutline />, ruta: '/equipos' },
+  { titulo: 'Red', icono: <IoGlobeOutline />, ruta: '/equipos' },
 ]
 
 const categoriesMenuItems = [
@@ -61,7 +64,7 @@ export const Sidebar = () => {
       </aside>
       <div className="relative">
         <div
-          className={`fixed bottom-5 right-5 ${isSidebarOpen ? '-right-[calc(100vw-339px)]' : ''} bg-gray-800 py-4 p-4 rounded-full cursor-pointer visible xl:hidden transition-all duration-300 text-white`}
+          className={`fixed bottom-5 right-5 ${isSidebarOpen ? '-right-[calc(100vw-339px)]' : ''} bg-gray-800 py-4 text-2xl p-4 rounded-full cursor-pointer visible xl:hidden transition-all duration-300 text-white`}
           onClick={toggleSidebar}
         >
           <IoApps />
