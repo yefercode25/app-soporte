@@ -28,7 +28,7 @@ export const RegistrarUsuarioForm = () => {
 
   const onSubmit = async (data: IRegistrarUsuario) => {
     setIsSendingData(true);
-    const createUser = fetch('/api/auth/registrar', {
+    const createUser = fetch('/api/user/registrar', {
       method: 'POST',
       body: JSON.stringify(data)
     });
