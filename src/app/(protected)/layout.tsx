@@ -6,8 +6,6 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 
-export const cache = 'no-store';
-
 export default async function ProtectedLayout({
   children
 }: {
