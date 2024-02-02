@@ -40,5 +40,6 @@ export const crearActividad = yup.object().shape({
   // pending, in-progress, completed, postponed
   userId: yup.string()
     .required('El usuario al que crear la actividad es requerido.'),
-  employeeId: yup.string().optional(),
+  employeeId: yup.string()
+    .required('Se debe seleccionar el funcionario solicitante.')
 });

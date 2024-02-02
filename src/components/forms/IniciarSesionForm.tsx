@@ -30,16 +30,25 @@ export const IniciarSesionForm = () => {
   const onSubmit = async (data: IIniciarSesion) => {
     setIsSendingData(true);
 
-    const result = await signIn('credentials', {
-      email: data.email,
-      password: data.password,
-      callbackUrl: `/`,
-      redirect: true
-    });
+    try {
+      const result = await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        redirect: false
+      });
 
-    if([401, 401].includes(result?.status!)) {
-      toastAlert({ tipo: 'error', title: 'Error al iniciar sesion', description: result?.error || 'Credenciales incorrectas' });
-      return setIsSendingData(false);
+      console.log(result);
+  
+      if([401, 401].includes(result?.status!)) {
+        toastAlert({ tipo: 'error', title: 'Error al iniciar sesion', description: result?.error || 'Credenciales incorrectas' });
+        return setIsSendingData(false);
+      }
+
+      if([200].includes(result?.status!)) {
+        router.replace(redirect);
+      }
+    } catch (error: any) {
+      toastAlert({ tipo: 'error', title: 'Error al iniciar sesion', description: error.message });
     }
 
     setIsSendingData(false);

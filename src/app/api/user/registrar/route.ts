@@ -1,4 +1,5 @@
-import { registrarUsuarioSchema, prisma } from '@/lib';
+import { registrarUsuarioSchema } from '@/lib/yupSchemas';
+import prisma from '@/lib/prisma';
 import { hashPassword } from '@/utils';
 import { NextResponse, NextRequest } from 'next/server';
 

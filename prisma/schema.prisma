@@ -15,14 +15,25 @@ model Activity {
   title       String
   observation String?
   createdAt   DateTime  @default(now())
-  priority    String    @default("normal")  // low, normal, high
+  priority    String    @default("normal") // low, normal, high
   posponedAt  DateTime?
   completedAt DateTime?
   status      String    @default("pending") // pending, in-progress, completed, postponed
   userId      String
   employeeId  String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employee Employee? @relation(fields: [employeeId], references: [id])
+}
+
+model Employee {
+  id         String     @id @default(cuid())
+  fullName   String
+  email      String?
+  phone      String?
+  dependency String     @default("Sin especificar")
+  
+  Activity   Activity[]
 }
 
 // Auth New Models

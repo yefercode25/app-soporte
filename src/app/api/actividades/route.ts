@@ -17,7 +17,7 @@ export async function POST(req: Request, res: NextApiResponse) {
     }
 
     if (employeeId) {
-      const findEmployee = await prisma.user.findUnique({ where: { id: employeeId }});
+      const findEmployee = await prisma.employee.findUnique({ where: { id: employeeId }});
       if (!findEmployee) {
         return NextResponse.json({
           message: 'El empleado al que se le quiere asignar la actividad no existe.',

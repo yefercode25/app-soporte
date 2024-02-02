@@ -1,5 +1,6 @@
 'use client';
 
+import { obtenerListadoFuncionarios } from '@/actions';
 import { Input } from '@/components';
 import { crearActividad } from '@/lib/yupSchemas';
 import { toastAlert } from '@/utils/toastAlert';
@@ -17,19 +18,32 @@ interface IGestionarTarea {
   posponedAt?: string;
   priority: 'low' | 'normal' | 'high';
   userId: string;
-  employeeId?: string;
+  employeeId: string;
 }
 
 export const GestionarTareaForm = () => {
   const session = useSession();
   const router = useRouter();
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
+  const [listEnployees, setListEmployees] = useState<{ value: string, label: string }[]>([{ label: '', value: 'Sin opciones disponibles' }]);
   const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<IGestionarTarea>({
     resolver: yupResolver(crearActividad)
   });
 
   useEffect(() => {
     setValue('userId', session?.data?.user?.id || '');
+
+    const getListaEmpleados = async () => {
+      const listado = await obtenerListadoFuncionarios();
+      if(listado.statusCode !== 200) {
+        toastAlert({ tipo: 'error', title: 'Error funcionarios', description: 'No se puede obtener el listado de funcionarios' });
+      }
+
+      const selectData = (listado).data?.funcionarios?.map((func: any) => ({ label: func.fullName, value: func.id }));
+      setListEmployees(selectData);
+    };
+
+    getListaEmpleados();
   }, [session, setValue]);
 
   const onSubmit = async (data: IGestionarTarea) => {
@@ -104,6 +118,16 @@ export const GestionarTareaForm = () => {
           register('priority').onChange(e);
           setValue('priority', e.target.value as any);
         }}
+      />
+      <Input
+        title="Funcionario que solicitó"
+        type="select"
+        id="priority"
+        icon={<IoAlbumsOutline />}
+        {...register('employeeId')}
+        errors={errors}
+        placeholder="Seleccione un funcionario"
+        selectOptions={listEnployees}
       />
       <Input
         title="La tarea se pospone hasta (opcional)"

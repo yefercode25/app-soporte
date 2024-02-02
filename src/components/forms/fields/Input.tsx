@@ -63,7 +63,7 @@ const Input = forwardRef<HTMLInputElement, Props>(({ title, icon, name, placehol
         )}
       </div>
       {errors![name as any] && (
-        <div className="bg-red-600 text-sm mt-1 text-white flex items-center gap-2 px-2 py-1 rounded-md">
+        <div className="bg-rose-700 text-sm mt-1 text-white flex items-center gap-2 px-2 py-1 rounded-md">
           <IoWarningOutline />
           {String(errors![name as any]?.message)}
         </div>
