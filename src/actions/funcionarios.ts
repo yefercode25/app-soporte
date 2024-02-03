@@ -1,6 +1,7 @@
 'use server';
 
 import prisma from "@/lib/prisma";
+import { useEffect } from "react";
 
 type Dependency = 'Inspección de policía' | 'Sisben' | 'Personería' | 'Secretaría de gobierno' | 'Secretaría de planeación' | 'Secretaría de hacienda' | 'Secretaría de desarrollo social' | 'Secretaría de desarrollo económico' | 'Oficina de control interno' | 'Comisaría de familia' | 'Secretaría de salud' | 'Secretaría de educación' | 'Secretaría de cultura' | 'Secretaría ejecutiva' | 'Almacén' | 'Sin especificar';
 

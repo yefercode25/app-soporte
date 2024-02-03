@@ -64,7 +64,7 @@ export const Sidebar = () => {
       </aside>
       <div className="relative">
         <div
-          className={`fixed bottom-5 right-5 ${isSidebarOpen ? '-right-[calc(100vw-339px)]' : ''} bg-gray-800 py-4 text-2xl p-4 rounded-full cursor-pointer visible xl:hidden transition-all duration-300 text-white`}
+          className={`z-50 fixed bottom-5 right-5 ${isSidebarOpen ? '-right-[calc(100vw-339px)]' : ''} bg-gray-800 py-4 text-2xl p-4 rounded-full cursor-pointer visible xl:hidden transition-all duration-300 text-white`}
           onClick={toggleSidebar}
         >
           <IoApps />

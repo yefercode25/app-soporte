@@ -7,7 +7,7 @@ export interface APIResponse<T> {
 
 export interface IniciarSesion {
   token: string;
-  user:  User;
+  user: User;
 }
 
 export interface User {
@@ -16,4 +16,38 @@ export interface User {
   lastName: string;
   email: string;
   createdAt: string;
+}
+
+export interface Employee {
+  dependency: string;
+  email: string;
+  fullName: string;
+  id: string;
+  phone: string;
+}
+
+export interface ListadoActividades {
+  actividades: GrupoActividad[];
+  month: string;
+  year: string;
+}
+
+
+export interface GrupoActividad {
+  date: string;
+  activities: Actividad[];
+}
+
+export interface Actividad {
+  id: string;
+  title: string;
+  observation: string;
+  createdAt: Date;
+  priority: string;
+  posponedAt: null;
+  completedAt: null;
+  status: string;
+  userId: string;
+  employeeId: string;
+  employee: Employee;
 }

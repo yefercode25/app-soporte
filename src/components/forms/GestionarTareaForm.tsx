@@ -16,7 +16,7 @@ interface IGestionarTarea {
   observation?: string;
   createdAt: string;
   posponedAt?: string;
-  priority: 'low' | 'normal' | 'high';
+  priority: 'baja' | 'normal' | 'alta';
   userId: string;
   employeeId: string;
 }
@@ -110,9 +110,9 @@ export const GestionarTareaForm = () => {
         errors={errors}
         placeholder="Selecciona la prioridad"
         selectOptions={[
-          { value: 'low', label: 'Baja' },
+          { value: 'baja', label: 'Baja' },
           { value: 'normal', label: 'Normal' },
-          { value: 'high', label: 'Alta' }
+          { value: 'alta', label: 'Alta' }
         ]}
         onChange={(e) => {
           register('priority').onChange(e);

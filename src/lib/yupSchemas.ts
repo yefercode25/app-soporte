@@ -35,7 +35,7 @@ export const crearActividad = yup.object().shape({
   posponedAt: yup.string().optional(),
   // low, normal, high
   priority: yup.string()
-    .oneOf(['low', 'normal', 'high'], 'La prioridad de la actividad no es válida.')
+    .oneOf(['baja', 'normal', 'alta'], 'La prioridad de la actividad no es válida.')
     .required('La prioridad de la actividad es requerida.'),
   // pending, in-progress, completed, postponed
   userId: yup.string()
