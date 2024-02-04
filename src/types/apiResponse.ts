@@ -44,8 +44,8 @@ export interface Actividad {
   observation: string;
   createdAt: Date;
   priority: string;
-  posponedAt: null;
-  completedAt: null;
+  posponedAt: Date;
+  completedAt: Date;
   status: string;
   userId: string;
   employeeId: string;
