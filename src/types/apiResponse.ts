@@ -18,6 +18,28 @@ export interface User {
   createdAt: string;
 }
 
+export interface Actividad {
+  id: string;
+  title: string;
+  observation: string;
+  createdAt: Date;
+  priority: string;
+  posponedAt: Date;
+  completedAt: Date;
+  status: 'pendiente' | 'en progreso' | 'completada' | 'pospueta';
+  userId: string;
+  employeeId: string;
+  employee: Employee;
+}
+
+export interface SubActivity {
+  id: string;
+  title: string;
+  createdAt: Date;
+  isCompleted: boolean;
+  activityId: string;
+}
+
 export interface Employee {
   dependency: string;
   email: string;
@@ -32,22 +54,7 @@ export interface ListadoActividades {
   year: string;
 }
 
-
 export interface GrupoActividad {
   date: string;
   activities: Actividad[];
-}
-
-export interface Actividad {
-  id: string;
-  title: string;
-  observation: string;
-  createdAt: Date;
-  priority: string;
-  posponedAt: Date;
-  completedAt: Date;
-  status: string;
-  userId: string;
-  employeeId: string;
-  employee: Employee;
 }

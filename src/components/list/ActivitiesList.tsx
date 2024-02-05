@@ -1,11 +1,8 @@
 'use client';
 
-import { listarActividades } from "@/actions";
-import { APIResponse, ListadoActividades, GrupoActividad } from "@/types";
+import { GrupoActividad } from "@/types";
 import { fechaFormateada, horaFormateada } from "@/utils/dates";
-import { toastAlert } from "@/utils/toastAlert";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { IoBusinessOutline, IoEyeOutline, IoPencil, IoPersonOutline, IoTrashOutline } from "react-icons/io5";
 
 interface ActivitiesListProps {
@@ -20,7 +17,7 @@ export const ActivitiesList = ({ actividades }: ActivitiesListProps) => {
           <h2 className="text-gray-800 capitalize text-xl font-bold mb-2">{fechaFormateada(grupoActividad.date)}</h2>
           <ul>
             {grupoActividad.activities.map((actividad) => (
-              <li key={actividad.id} className="p-3 bg-blue-50 rounded-md text-sm shadow mb-3 md:flex md:items-center justify-between gap-2">
+              <li key={actividad.id} className="p-3 bg-blue-50 hover:bg-blue-100 transition-all rounded-md text-sm shadow mb-3 md:flex md:items-center justify-between gap-2">
                 <div>
                   <div className="flex justify-between items-center mb-2 px-2 py-1 rounded-full bg-white">
                     <span className="text-[10px] text-blue-600 font-semibold inline-block px-4 py-[2px] rounded-full">{horaFormateada(actividad.createdAt.toISOString())}</span>

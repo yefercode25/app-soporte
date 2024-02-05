@@ -11,7 +11,10 @@ interface Props {
 
 export const SidebarLink = ({ icono, ruta, titulo }: Props) => {
   const pathname = usePathname();
-  const isActive = pathname === ruta;
+  let isActive = pathname === ruta;
+  if (pathname.includes(ruta) && ruta !== '/') {
+    isActive = true;
+  }
 
   return (
     <li>

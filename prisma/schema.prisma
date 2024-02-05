@@ -15,25 +15,36 @@ model Activity {
   title       String
   observation String?
   createdAt   DateTime  @default(now())
-  priority    String    @default("normal") // low, normal, high
+  priority    String    @default("normal") // baja, normal, alta
   posponedAt  DateTime?
   completedAt DateTime?
-  status      String    @default("pending") // pending, in-progress, completed, postponed
+  status      String    @default("pendiente") // pendiente, en progreso, completada, pospueta
   userId      String
   employeeId  String?
 
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  employee Employee? @relation(fields: [employeeId], references: [id])
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employee    Employee?     @relation(fields: [employeeId], references: [id])
+  SubActivity SubActivity[]
+}
+
+model SubActivity {
+  id          String   @id @default(cuid())
+  title       String
+  createdAt   DateTime @default(now())
+  isCompleted Boolean  @default(false)
+  activityId  String
+
+  activity Activity @relation(fields: [activityId], references: [id])
 }
 
 model Employee {
-  id         String     @id @default(cuid())
+  id         String  @id @default(cuid())
   fullName   String
   email      String?
   phone      String?
-  dependency String     @default("Sin especificar")
-  
-  Activity   Activity[]
+  dependency String  @default("Sin especificar")
+
+  Activity Activity[]
 }
 
 // Auth New Models
