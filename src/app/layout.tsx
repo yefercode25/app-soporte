@@ -20,6 +20,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  process.env.TZ = "America/Bogota";
+  
   return (
     <html lang="es-CO">
       <body className={montserrat.className}>
