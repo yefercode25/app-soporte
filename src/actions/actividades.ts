@@ -2,7 +2,13 @@
 
 import { authOptions } from "@/lib/authOptions";
 import prisma from "@/lib/prisma";
+import { Actividad } from "@/types";
 import { getServerSession } from 'next-auth';
+import * as utc from 'dayjs/plugin/utc';
+import * as timezone from 'dayjs/plugin/timezone';
+import dayjs from 'dayjs';
+dayjs.extend(utc as any);
+dayjs.extend(timezone as any);
 
 interface ListarActividades {
   month?: string;
@@ -43,11 +49,18 @@ export const listarActividades = async ({ month, year }: ListarActividades) => {
       },
     });
 
+    const mapActividades = actividades.map((actividad: Actividad) => {
+      return {
+        ...actividad,
+        createdAt: dayjs(actividad.createdAt).tz('America/Bogota').toDate(),
+      }
+    });
+
     // Inicializar un objeto para almacenar actividades agrupadas por día
     let actividadesAgrupadasPorDia: any = {};
 
     // Iterar sobre las actividades y agruparlas por día
-    actividades.forEach((actividad: any) => {
+    mapActividades.forEach((actividad: any) => {
       const fecha = actividad.createdAt.toISOString().split('T')[0];
       if (!actividadesAgrupadasPorDia[fecha]) {
         actividadesAgrupadasPorDia[fecha] = [];
