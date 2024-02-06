@@ -40,7 +40,7 @@ export const listarActividades = async ({ month, year }: ListarActividades) => {
       },
       include: {
         employee: true
-      }
+      },
     });
 
     // Inicializar un objeto para almacenar actividades agrupadas por día

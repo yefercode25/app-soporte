@@ -21,7 +21,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es-CO">
       <body className={montserrat.className}>
         <AuthProvider>
           <div className="min-h-screen bg-gray-200">
