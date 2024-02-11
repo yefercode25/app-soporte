@@ -23,6 +23,7 @@ export const obtenerZonaHoraria = () => {
 
 export const convertToAmericana = (date: string) => {
   const currentZone = dayjs.tz.guess();
+  console.log("🚀 ~ convertToAmericana ~ currentZone:", currentZone)
   const toConvertZone = 'America/Bogota';
 
   if (currentZone === toConvertZone) return date;
