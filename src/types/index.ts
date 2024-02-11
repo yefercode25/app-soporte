@@ -1,3 +1,3 @@
 export * from './apiResponse';
-export * from './index';
+export * from './forms';
 export * from './pageProps';

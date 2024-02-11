@@ -25,11 +25,9 @@ export default async function ActividadesPage() {
         actividades={listado?.data?.actividades || []}
       />
 
-      <div className="fixed bottom-[90px] xl:bottom-10 right-5 xl:right-10 bg-blue-600 text-white py-4 p-4 rounded-full cursor-pointer visible transition-all duration-300 text-2xl">
-        <Link href="/actividades/crear">
-          <FaPlus />
-        </Link>
-      </div>
+      <Link href="/actividades/crear" className="fixed bottom-[90px] xl:bottom-10 right-5 xl:right-10 bg-blue-600 text-white py-4 p-4 rounded-full cursor-pointer visible transition-all duration-300 text-2xl">
+        <FaPlus />
+      </Link>
     </div>
   );
 }

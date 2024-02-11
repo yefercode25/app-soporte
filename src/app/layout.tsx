@@ -40,7 +40,7 @@ export default async function RootLayout({
               position={'bottom-right'}
               duration={3000}
               style={{
-                fontFamily: 'Montserrat',
+                fontFamily: 'Montserrat, sans-serif',
               }}
             />
           </div>

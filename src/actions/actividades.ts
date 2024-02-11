@@ -2,13 +2,9 @@
 
 import { authOptions } from "@/lib/authOptions";
 import prisma from "@/lib/prisma";
-import { Actividad } from "@/types";
+import { GestionarTarea } from "@/types";
+import { convertToAmericana } from "@/utils/dates";
 import { getServerSession } from 'next-auth';
-import * as utc from 'dayjs/plugin/utc';
-import * as timezone from 'dayjs/plugin/timezone';
-import dayjs from 'dayjs';
-dayjs.extend(utc as any);
-dayjs.extend(timezone as any);
 
 interface ListarActividades {
   month?: string;
@@ -49,18 +45,11 @@ export const listarActividades = async ({ month, year }: ListarActividades) => {
       },
     });
 
-    const mapActividades = actividades.map((actividad: Actividad) => {
-      return {
-        ...actividad,
-        createdAt: dayjs(actividad.createdAt).tz('America/Bogota').toDate(),
-      }
-    });
-
     // Inicializar un objeto para almacenar actividades agrupadas por día
     let actividadesAgrupadasPorDia: any = {};
 
     // Iterar sobre las actividades y agruparlas por día
-    mapActividades.forEach((actividad: any) => {
+    actividades.forEach((actividad: any) => {
       const fecha = actividad.createdAt.toISOString().split('T')[0];
       if (!actividadesAgrupadasPorDia[fecha]) {
         actividadesAgrupadasPorDia[fecha] = [];
@@ -122,6 +111,39 @@ export const obtenerActividad = async (id: string) => {
     return {
       data: null,
       message: 'Se ha producido un error al obtener la actividad, intente nuevamente.',
+      statusCode: 500,
+      statusText: 'INTERNAL_SERVER_ERROR'
+    }
+  }
+};
+
+export const crearActividad = async (actividad: GestionarTarea) => {
+  try {
+    const { createdAt, employeeId, priority, title, userId, observation, posponedAt } = actividad;
+    const localeDate = convertToAmericana(createdAt);
+    
+    const nuevaActividad = await prisma.activity.create({
+      data: {
+        createdAt: new Date(localeDate),
+        employeeId,
+        priority,
+        title,
+        userId,
+        observation,
+        posponedAt: posponedAt ? new Date(convertToAmericana(posponedAt)) : null
+      }
+    });
+
+    return {
+      message: 'La actividad ha sido creada correctamente.',
+      data: nuevaActividad,
+      statusCode: 201,
+      statusText: 'CREATED'
+    }
+  } catch (error) {
+    return {
+      data: null,
+      message: 'Se ha producido un error al crear la actividad, intente nuevamente.',
       statusCode: 500,
       statusText: 'INTERNAL_SERVER_ERROR'
     }

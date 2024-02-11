@@ -23,7 +23,7 @@ export interface Actividad {
   title: string;
   observation: string;
   createdAt: Date;
-  priority: string;
+  priority: 'baja' | 'normal' | 'alta';
   posponedAt: Date;
   completedAt: Date;
   status: 'pendiente' | 'en progreso' | 'completada' | 'pospueta';

@@ -1,8 +1,9 @@
 'use client';
 
-import { obtenerListadoFuncionarios } from '@/actions';
+import { crearActividad, obtenerListadoFuncionarios } from '@/actions';
 import { Input } from '@/components';
-import { crearActividad } from '@/lib/yupSchemas';
+import { crearActividad as crearActividadSchema } from '@/lib/yupSchemas';
+import { GestionarTarea } from '@/types';
 import { toastAlert } from '@/utils/toastAlert';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSession } from 'next-auth/react';
@@ -11,23 +12,13 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoAlbumsOutline, IoCalendarClearOutline, IoTicketOutline, IoTimerOutline } from 'react-icons/io5';
 
-interface IGestionarTarea {
-  title: string;
-  observation?: string;
-  createdAt: string;
-  posponedAt?: string;
-  priority: 'baja' | 'normal' | 'alta';
-  userId: string;
-  employeeId: string;
-}
-
 export const GestionarTareaForm = () => {
   const session = useSession();
   const router = useRouter();
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
   const [listEnployees, setListEmployees] = useState<{ value: string, label: string }[]>([{ label: '', value: 'Sin opciones disponibles' }]);
-  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<IGestionarTarea>({
-    resolver: yupResolver(crearActividad)
+  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<GestionarTarea>({
+    resolver: yupResolver(crearActividadSchema)
   });
 
   useEffect(() => {
@@ -46,13 +37,10 @@ export const GestionarTareaForm = () => {
     getListaEmpleados();
   }, [session, setValue]);
 
-  const onSubmit = async (data: IGestionarTarea) => {
+  const onSubmit = async (data: GestionarTarea) => {
     setIsSendingData(true);
 
-    const response = fetch('/api/actividades', {
-      method: 'POST',
-      body: JSON.stringify(data)
-    });
+    const response = crearActividad(data);
 
     toastAlert({ 
       tipo: 'promise', 
@@ -62,10 +50,17 @@ export const GestionarTareaForm = () => {
       promise: response
     });
 
-    if((await response).status === 201) {
+    /* if((await response).status === 201) {
       reset();
       router.push('/actividades');
-    }
+    } */
+
+    response.then((data) => {
+      if(data?.statusCode === 201) {
+        reset();
+        router.push('/actividades');
+      }
+    });
 
     setIsSendingData(false);
   };
