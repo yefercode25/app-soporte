@@ -20,7 +20,6 @@ export default async function ActividadesPage() {
     <div className="relative">
       <h1 className="text-2xl font-extrabold mb-4">
         Actividades realizadas en {format(listado.data.month, 'LLLL', { locale: es })}
-        <span>{dayjs.tz.guess()}</span>
       </h1>
 
       <ActivitiesList
