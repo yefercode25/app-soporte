@@ -5,7 +5,7 @@ import { APIResponse, Actividad, PageProps } from "@/types";
 import { fechaFormateada } from "@/utils/dates";
 import { notFound } from "next/navigation";
 import { IoBusinessOutline, IoCalendarOutline, IoDuplicateOutline, IoPersonOutline } from "react-icons/io5";
-import { SubActivyItem } from "@/components";
+import { Controls, SubActivyItem } from "@/components";
 
 export default async function VerActividadPage({ params }: PageProps) {
   const id = params?.id ?? "";
@@ -69,14 +69,14 @@ export default async function VerActividadPage({ params }: PageProps) {
       <div className="mt-10">
         <div className="flex items-center gap-2">
           <h2 className="text-xl font-bold">Tareas asociadas</h2>
-          <span className="bg-blue-600 font-semibold px-2 py-1 rounded-full text-white text-xs">{subActividades?.length || 0} registradas</span>
+          <span className="bg-blue-600 font-semibold px-2 py-1 rounded-full text-white text-xs">{(subActividades)?.length || 0} registradas</span>
         </div>
 
         <div className="mt-4 rounded-md shadow bg-gray-50 px-2 py-2">
           {subActividades.length > 0 ? (
             <div className="mt-2">
               {subActividades.map((subActividad: any) => (
-                <SubActivyItem 
+                <SubActivyItem
                   key={subActividad.id}
                   {...subActividad}
                 />
@@ -90,11 +90,12 @@ export default async function VerActividadPage({ params }: PageProps) {
           )}
         </div>
       </div>
-      <div className="fixed bottom-[90px] xl:bottom-10 right-5 xl:right-10 bg-blue-600 text-white py-4 p-4 rounded-full cursor-pointer visible transition-all duration-300 text-2xl">
-        <Link href={`/actividades/${id}/subtarea/crear`}>
+
+      <Controls returnLink="/actividades">
+        <Link href={`/actividades/${id}/subtarea/crear`} className="bg-blue-600 text-white py-4 p-4 rounded-full cursor-pointer visible transition-all duration-300 text-2xl">
           <IoDuplicateOutline />
         </Link>
-      </div>
+      </Controls>
     </div>
   );
 }
