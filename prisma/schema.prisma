@@ -34,7 +34,7 @@ model SubActivity {
   isCompleted Boolean  @default(false)
   activityId  String
 
-  activity Activity @relation(fields: [activityId], references: [id])
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
 }
 
 model Employee {

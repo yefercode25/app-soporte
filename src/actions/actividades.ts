@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/authOptions";
 import prisma from "@/lib/prisma";
 import { GestionarTarea } from "@/types";
 import { convertToISO } from "@/utils/dates";
+import dayjs from "dayjs";
 import { getServerSession } from 'next-auth';
 
 interface ListarActividades {
@@ -50,7 +51,7 @@ export const listarActividades = async ({ month, year }: ListarActividades) => {
 
     // Iterar sobre las actividades y agruparlas por día
     actividades.forEach((actividad: any) => {
-      const fecha = actividad.createdAt.toISOString().split('T')[0];
+      const fecha = dayjs(actividad.createdAt).format('YYYY-MM-DD');
       if (!actividadesAgrupadasPorDia[fecha]) {
         actividadesAgrupadasPorDia[fecha] = [];
       }
@@ -141,7 +142,6 @@ export const crearActividad = async (actividad: GestionarTarea) => {
       statusText: 'CREATED'
     }
   } catch (error) {
-    console.log(error);
     return {
       data: null,
       message: 'Se ha producido un error al crear la actividad, intente nuevamente.',

@@ -8,13 +8,11 @@ dayjs.extend(timezone as any);
 dayjs.locale(locale); // Establecer el idioma español
 
 export const fechaFormateada = (fecha: string) => {
-  const parseDate = dayjs(fecha).tz('America/Bogota');
-  return parseDate.format('dddd, DD MMMM');
+  return dayjs(fecha).format('dddd, DD MMMM');
 };
 
 export const horaFormateada = (fecha: string) => {
-  const parseDate = dayjs(fecha).tz('America/Bogota');
-  return parseDate.format('HH:mm A');
+  return dayjs(fecha).format('HH:mm A');
 };
 
 export const obtenerZonaHoraria = () => {
