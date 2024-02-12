@@ -36,8 +36,6 @@ export const IniciarSesionForm = () => {
         password: data.password,
         redirect: false
       });
-
-      console.log(result);
   
       if([401, 401].includes(result?.status!)) {
         toastAlert({ tipo: 'error', title: 'Error al iniciar sesion', description: result?.error || 'Credenciales incorrectas' });

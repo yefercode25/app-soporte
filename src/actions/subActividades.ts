@@ -1,6 +1,7 @@
 'use server';
 
 import prisma from "@/lib/prisma";
+import { convertToISO } from "@/utils/dates";
 
 export const listarSubActivities = async (idActivity: string) => {
   try {
@@ -36,10 +37,12 @@ export const crearSubActivity = async (data: IGestionarSubTarea) => {
   const { title, createdAt, isCompleted, activityId } = data;
 
   try {
+    const isoDate = convertToISO(createdAt);
+
     const subActivity = await prisma.subActivity.create({
       data: {
         title,
-        createdAt: new Date(createdAt),
+        createdAt: isoDate,
         isCompleted,
         activityId
       }
