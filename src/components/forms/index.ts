@@ -1,4 +1,5 @@
 export * from './ActualizarEstadoActividadForm';
+export * from './DeleteTareaForm';
 export * from './GestionarFuncionarioForm';
 export * from './GestionarSubtareaForm';
 export * from './GestionarTareaForm';
