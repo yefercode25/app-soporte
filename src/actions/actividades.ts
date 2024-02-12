@@ -124,13 +124,13 @@ export const crearActividad = async (actividad: GestionarTarea) => {
     
     const nuevaActividad = await prisma.activity.create({
       data: {
-        createdAt: localeDate,
+        createdAt,
         employeeId,
         priority,
         title,
         userId,
         observation,
-        posponedAt: posponedAt ? convertToAmericana(posponedAt) : null
+        posponedAt: posponedAt ? posponedAt : null
       }
     });
 
