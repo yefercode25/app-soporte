@@ -3,7 +3,7 @@
 import { authOptions } from "@/lib/authOptions";
 import prisma from "@/lib/prisma";
 import { GestionarTarea } from "@/types";
-import { convertToAmericana } from "@/utils/dates";
+import { convertToISO } from "@/utils/dates";
 import { getServerSession } from 'next-auth';
 
 interface ListarActividades {
@@ -120,17 +120,17 @@ export const obtenerActividad = async (id: string) => {
 export const crearActividad = async (actividad: GestionarTarea) => {
   try {
     const { createdAt, employeeId, priority, title, userId, observation, posponedAt } = actividad;
-    const localeDate = convertToAmericana(createdAt);
+    const isoDate = convertToISO(createdAt);
     
     const nuevaActividad = await prisma.activity.create({
       data: {
-        createdAt,
+        createdAt: isoDate,
         employeeId,
         priority,
         title,
         userId,
         observation,
-        posponedAt: posponedAt ? posponedAt : null
+        posponedAt: posponedAt ? convertToISO(posponedAt) : null
       }
     });
 
@@ -141,6 +141,7 @@ export const crearActividad = async (actividad: GestionarTarea) => {
       statusText: 'CREATED'
     }
   } catch (error) {
+    console.log(error);
     return {
       data: null,
       message: 'Se ha producido un error al crear la actividad, intente nuevamente.',

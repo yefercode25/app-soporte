@@ -21,11 +21,6 @@ export const obtenerZonaHoraria = () => {
   return dayjs.tz.guess();
 };
 
-export const convertToAmericana = (date: string) => {
-  const currentZone = dayjs.tz.guess();
-  const toConvertZone = 'America/Bogota';
-
-  if (currentZone === toConvertZone) return date;
-
-  return dayjs(date).tz(toConvertZone).format();
+export const convertToISO = (date: string) => {
+  return dayjs(date).toISOString();
 };
