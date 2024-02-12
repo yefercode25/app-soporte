@@ -3,7 +3,7 @@
 import { GrupoActividad } from "@/types";
 import { fechaFormateada, horaFormateada } from "@/utils/dates";
 import Link from "next/link";
-import { IoBusinessOutline, IoEyeOutline, IoPencil, IoPersonOutline, IoTrashOutline } from "react-icons/io5";
+import { IoBusinessOutline, IoCreateOutline, IoEyeOutline, IoPersonOutline, IoRefreshOutline, IoTrashOutline } from "react-icons/io5";
 
 interface ActivitiesListProps {
   actividades: GrupoActividad[];
@@ -48,7 +48,13 @@ export const ActivitiesList = ({ actividades }: ActivitiesListProps) => {
                     href={`/actividades/${actividad?.id}/editar`}
                     className="bg-blue-600 text-white w-full justify-center flex items-center px-3 py-2 rounded-md cursor-pointer transition-all duration-300 hover:bg-blue-700 font-semibold"
                   >
-                    <span><IoPencil /></span>
+                    <span><IoCreateOutline /></span>
+                  </Link>
+                  <Link
+                    href={`/actividades/${actividad?.id}/estado`}
+                    className="bg-orange-600 text-white w-full justify-center flex items-center px-3 py-2 rounded-md cursor-pointer transition-all duration-300 hover:bg-blue-700 font-semibold"
+                  >
+                    <span><IoRefreshOutline /></span>
                   </Link>
                   <Link
                     href={`/actividades/${actividad?.id}/eliminar`}

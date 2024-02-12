@@ -2,7 +2,7 @@
 
 import { authOptions } from "@/lib/authOptions";
 import prisma from "@/lib/prisma";
-import { GestionarTarea } from "@/types";
+import { ActivityStatus, GestionarTarea } from "@/types";
 import { convertToISO } from "@/utils/dates";
 import dayjs from "dayjs";
 import { getServerSession } from 'next-auth';
@@ -145,6 +145,40 @@ export const crearActividad = async (actividad: GestionarTarea) => {
     return {
       data: null,
       message: 'Se ha producido un error al crear la actividad, intente nuevamente.',
+      statusCode: 500,
+      statusText: 'INTERNAL_SERVER_ERROR'
+    }
+  }
+};
+
+export const actualizarEstadoActividad = async (id: string, status: ActivityStatus) => {
+  try {
+    const findActividad = await prisma.activity.findUnique({ where: { id } });
+
+    if (!findActividad) {
+      return {
+        data: null,
+        message: 'No se ha encontrado la actividad solicitada.',
+        statusCode: 404,
+        statusText: 'NOT_FOUND'
+      }
+    }
+
+    const actividad = await prisma.activity.update({
+      where: { id },
+      data: { status }
+    });
+
+    return {
+      message: 'El estado de la actividad ha sido actualizado correctamente.',
+      data: actividad,
+      statusCode: 200,
+      statusText: 'OK'
+    }
+  } catch (error) {
+    return {
+      data: null,
+      message: 'Se ha producido un error al actualizar el estado de la actividad, intente nuevamente.',
       statusCode: 500,
       statusText: 'INTERNAL_SERVER_ERROR'
     }

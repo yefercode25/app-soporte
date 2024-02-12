@@ -32,6 +32,10 @@ export interface Actividad {
   employee: Employee;
 }
 
+export type ActivityPriority = 'baja' | 'normal' | 'alta';
+
+export type ActivityStatus = 'pendiente' | 'en progreso' | 'completada' | 'pospueta';
+
 export interface SubActivity {
   id: string;
   title: string;

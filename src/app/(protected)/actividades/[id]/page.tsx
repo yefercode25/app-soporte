@@ -4,7 +4,7 @@ import { listarSubActivities, obtenerActividad } from "@/actions";
 import { APIResponse, Actividad, PageProps } from "@/types";
 import { fechaFormateada } from "@/utils/dates";
 import { notFound } from "next/navigation";
-import { IoBusinessOutline, IoCalendarOutline, IoDuplicateOutline, IoPersonOutline } from "react-icons/io5";
+import { IoBusinessOutline, IoCalendarOutline, IoDuplicateOutline, IoPersonOutline, IoRefreshOutline } from "react-icons/io5";
 import { Controls, SubActivyItem } from "@/components";
 
 export default async function VerActividadPage({ params }: PageProps) {
@@ -92,6 +92,9 @@ export default async function VerActividadPage({ params }: PageProps) {
       </div>
 
       <Controls returnLink="/actividades">
+        <Link href={`/actividades/${id}/estado`} className="bg-orange-600 text-white py-4 p-4 rounded-full cursor-pointer visible transition-all duration-300 text-2xl">
+          <IoRefreshOutline />
+        </Link>
         <Link href={`/actividades/${id}/subtarea/crear`} className="bg-blue-600 text-white py-4 p-4 rounded-full cursor-pointer visible transition-all duration-300 text-2xl">
           <IoDuplicateOutline />
         </Link>

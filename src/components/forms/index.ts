@@ -1,3 +1,4 @@
+export * from './ActualizarEstadoActividadForm';
 export * from './GestionarFuncionarioForm';
 export * from './GestionarSubtareaForm';
 export * from './GestionarTareaForm';
