@@ -1,22 +1,24 @@
 'use client';
 
 import { crearActividad, obtenerListadoFuncionarios } from '@/actions';
-import { Input } from '@/components';
-import { crearActividadSchema as crearActividadSchema } from '@/lib/yupSchemas';
+import { crearActividadSchema } from '@/lib/yup-schemas';
 import { GestionarActividad } from '@/types';
-import { toastAlert } from '@/utils/toastAlert';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { Input } from '@/components';
+import { IoAlbumsOutline, IoCalendarClearOutline, IoTicketOutline, IoTimerOutline } from 'react-icons/io5';
+import { toaster } from '@/utils/toast';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { IoAlbumsOutline, IoCalendarClearOutline, IoTicketOutline, IoTimerOutline } from 'react-icons/io5';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-export const GestionarTareaForm = () => {
+export const RegistrarActividadForm = () => {
   const session = useSession();
   const router = useRouter();
+
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
   const [listEnployees, setListEmployees] = useState<{ value: string, label: string }[]>([{ label: '', value: 'Sin opciones disponibles' }]);
+
   const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<GestionarActividad>({
     resolver: yupResolver(crearActividadSchema)
   });
@@ -26,11 +28,15 @@ export const GestionarTareaForm = () => {
 
     const getListaEmpleados = async () => {
       const listado = await obtenerListadoFuncionarios();
-      if(listado.statusCode !== 200) {
-        toastAlert({ tipo: 'error', title: 'Error funcionarios', description: 'No se puede obtener el listado de funcionarios' });
+      if (listado.statusCode !== 200) {
+        toaster({
+          tipo: 'error',
+          title: 'Error al listar',
+          description: 'No se puede obtener el listado de funcionarios'
+        });
       }
 
-      const selectData = (listado).data?.funcionarios?.map((func: any) => ({ label: func.fullName, value: func.id }));
+      const selectData = (listado).data?.funcionarios?.map((func: any) => ({ label: func?.fullName, value: func?.id }));
       setListEmployees(selectData);
     };
 
@@ -39,30 +45,38 @@ export const GestionarTareaForm = () => {
 
   const onSubmit = async (data: GestionarActividad) => {
     setIsSendingData(true);
-
-    const response = crearActividad(data);
-
-    toastAlert({ 
-      tipo: 'promise', 
-      loadingText: 'Registrando actividad...',
-      successText: 'Actividad registrada correctamente',
-      errorText: 'Error al registrar la actividad',
-      promise: response
+    toaster({
+      tipo: 'loading',
+      title: 'Registrando actividad',
+      description: 'Se está intentando registrar la nueva actividad'
     });
 
-    /* if((await response).status === 201) {
-      reset();
-      router.push('/actividades');
-    } */
-
-    response.then((data) => {
-      if(data?.statusCode === 201) {
+    try {
+      const response = await crearActividad(data);
+      if (response?.statusCode === 201) {
+        toaster({
+          tipo: 'success',
+          title: 'Actividad registrada',
+          description: response.message
+        });
         reset();
-        router.push('/actividades');
+        return router.push('/actividades');
       }
-    });
-
-    setIsSendingData(false);
+      
+      return toaster({
+        tipo: 'error',
+        title: 'Error registro',
+        description: response.message
+      });
+    } catch (_error: any) {
+      return toaster({
+        tipo: 'error',
+        title: 'Error registro',
+        description: 'No se ha podido registrar la mueva actividad, intentalo nuevamente.'
+      });
+    } finally {
+      setIsSendingData(false);
+    }
   };
 
   return (

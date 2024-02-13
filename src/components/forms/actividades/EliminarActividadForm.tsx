@@ -1,7 +1,7 @@
 'use client';
 
 import { eliminarActividad } from "@/actions";
-import { toastAlert } from "@/utils/toastAlert";
+import { toaster } from "@/utils/toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -9,7 +9,7 @@ interface DeleteTareaFormProps {
   id: string;
 }
 
-export const DeleteTareaForm = ({ id }: DeleteTareaFormProps) => {
+export const EliminarActividadForm = ({ id }: DeleteTareaFormProps) => {
   const router = useRouter();
 
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
@@ -17,15 +17,33 @@ export const DeleteTareaForm = ({ id }: DeleteTareaFormProps) => {
   const handleDelete = async () => {
     try {
       setIsSendingData(true);
+      toaster({
+        tipo: 'loading',
+        title: 'Eliminando actividad',
+        description: 'Se está intentando eliminar la actividad'
+      });
+
       const deleteActivity = await eliminarActividad(id);
-      if(deleteActivity.statusCode === 200) {
-        toastAlert({ title: "Actividad eliminada", description: deleteActivity.message, tipo: "success" });
+      if (deleteActivity.statusCode === 200) {
+        toaster({
+          title: "Actividad eliminada",
+          description: deleteActivity.message,
+          tipo: "success"
+        });
         return router.push(`/actividades`);
       }
 
-      return toastAlert({ title: "Error", description: deleteActivity.message, tipo: "error" });
+      return toaster({
+        title: "Error eliminación",
+        description: deleteActivity.message,
+        tipo: "error"
+      });
     } catch (error) {
-      toastAlert({ title: "Error", description: "Ocurrió un error al eliminar la actividad", tipo: "error" })
+      toaster({
+        title: "Error eliminación",
+        description: "Ocurrió un error al intentar eliminar la actividad",
+        tipo: "error"
+      });
     } finally {
       setIsSendingData(false);
     }

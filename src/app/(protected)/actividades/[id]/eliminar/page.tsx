@@ -1,5 +1,5 @@
 import { obtenerActividad } from "@/actions";
-import { Controls, DeleteTareaForm } from "@/components";
+import { Controls, EliminarActividadForm } from "@/components";
 import { PageProps } from "@/types";
 import { notFound } from "next/navigation";
 
@@ -18,7 +18,7 @@ export default async function EliminarActividadPage({ params }: PageProps) {
         <p className="mt-2 text-red-500 font-medium">Si eliminas la actividad, se perderá toda la información relacionada con ella.</p>
         <h3 className="mt-4">¿Estás seguro de que deseas eliminar la actividad {`"${data?.title?.trim()}"`}?</h3>
 
-        <DeleteTareaForm id={id} />
+        <EliminarActividadForm id={id} />
       </div>
       <Controls returnLink={`/actividades/${id}`} />
     </div>

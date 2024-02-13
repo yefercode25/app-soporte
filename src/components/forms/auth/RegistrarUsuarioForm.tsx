@@ -5,10 +5,10 @@ import { IoPersonAddOutline, IoPersonOutline, IoAtOutline, IoLockClosedOutline, 
 import { Input } from '@/components';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { registrarUsuarioSchema } from "@/lib/yupSchemas";
-import { toastAlert } from "@/utils/toastAlert";
+import { registrarUsuarioSchema } from "@/lib/yup-schemas";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toaster } from "@/utils/toast";
 
 interface IRegistrarUsuario {
   name: string;
@@ -28,25 +28,32 @@ export const RegistrarUsuarioForm = () => {
 
   const onSubmit = async (data: IRegistrarUsuario) => {
     setIsSendingData(true);
-    const createUser = fetch('/api/user/registrar', {
+    toaster({
+      tipo: 'loading',
+      title: 'Registrando usuario',
+      description: 'Se está intentando registrar el nuevo usuario'
+    });
+
+    const createUser = await fetch('/api/user/registrar', {
       method: 'POST',
       body: JSON.stringify(data)
     });
 
-    toastAlert({
-      promise: createUser,
-      tipo: 'promise',
-      loadingText: 'Registrando usuario...',
-      successText: `Se ha registrado el usuario con correo ${data.email} correctamente.`,
-      errorText: 'No se ha podido registrar el usuario, por favor intenta nuevamente.'
-    });
+    if(createUser.status === 201) {
+      reset();
+      toaster({
+        tipo: 'success',
+        title: 'Usuario registrado',
+        description: 'Se ha registrado el nuevo usuario de manera correcta'
+      });
+      setIsSendingData(false);
+      return router.push('/auth/iniciar-sesion');
+    }
 
-    createUser.then((res) => {
-      if(res.status === 201) {
-        reset();
-        setIsSendingData(false);
-        router.push('/auth/iniciar-sesion');
-      }
+    return toaster({
+      tipo: 'error',
+      title: 'Error registro',
+      description: 'No se ha podido registrar el nuevo usuario de manera correcta'
     });
   };
 

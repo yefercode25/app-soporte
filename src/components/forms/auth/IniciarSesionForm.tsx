@@ -1,15 +1,15 @@
 'use client';
 
-import Link from "next/link"
-import { IoAtOutline, IoLockClosedOutline } from "react-icons/io5";
+import { iniciarSesionSchema } from "@/lib/yup-schemas";
 import { Input, SignInGoogle } from '@/components';
+import { IoAtOutline, IoLockClosedOutline } from "react-icons/io5";
+import { signIn } from "next-auth/react";
+import { toaster } from "@/utils/toast";
+import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { iniciarSesionSchema } from "@/lib/yupSchemas";
-import { toastAlert } from "@/utils/toastAlert";
-import { signIn } from "next-auth/react";
+import Link from "next/link"
 
 interface IIniciarSesion {
   email: string;
@@ -29,6 +29,7 @@ export const IniciarSesionForm = () => {
 
   const onSubmit = async (data: IIniciarSesion) => {
     setIsSendingData(true);
+    
 
     try {
       const result = await signIn('credentials', {
@@ -36,17 +37,25 @@ export const IniciarSesionForm = () => {
         password: data.password,
         redirect: false
       });
-  
-      if([401, 401].includes(result?.status!)) {
-        toastAlert({ tipo: 'error', title: 'Error al iniciar sesion', description: result?.error || 'Credenciales incorrectas' });
+
+      if ([401, 401].includes(result?.status!)) {
+        toaster({
+          tipo: 'error',
+          title: 'Error al iniciar sesion',
+          description: result?.error || 'Credenciales incorrectas'
+        });
         return setIsSendingData(false);
       }
 
-      if([200].includes(result?.status!)) {
+      if ([200].includes(result?.status!)) {
         router.replace(redirect);
       }
     } catch (error: any) {
-      toastAlert({ tipo: 'error', title: 'Error al iniciar sesion', description: error.message });
+      toaster({
+        tipo: 'error',
+        title: 'Error al iniciar sesion',
+        description: error.message
+      });
     }
 
     setIsSendingData(false);
@@ -91,7 +100,7 @@ export const IniciarSesionForm = () => {
         </div>
 
         <div className="mb-3">
-          <button disabled={isSendingData} className="mb-2 block w-full text-center text-white bg-blue-600 hover:bg-blue-700 px-2 py-1.5 rounded-md">Iniciar sesión</button>
+          <button disabled={isSendingData} className="mb-2 block w-full text-center text-white bg-blue-600 hover:bg-blue-700 px-2 py-1.5 rounded-md">{isSendingData ? 'Iniciando sesión...' : 'Iniciar sesión'}</button>
           <SignInGoogle isSendingData={isSendingData} />
         </div>
       </form>

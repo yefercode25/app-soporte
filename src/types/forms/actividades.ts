@@ -1,3 +1,5 @@
+import { ActivityStatus } from "..";
+
 export interface GestionarActividad {
   title: string;
   observation?: string;
@@ -6,4 +8,8 @@ export interface GestionarActividad {
   priority: 'baja' | 'normal' | 'alta';
   userId: string;
   employeeId: string;
+}
+
+export interface ActualizarEstadoActividad {
+  status: ActivityStatus;
 }

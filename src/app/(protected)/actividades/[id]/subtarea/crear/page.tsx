@@ -1,5 +1,5 @@
 import { obtenerActividad } from "@/actions";
-import { Controls, GestionarSubtareaForm } from "@/components";
+import { Controls, RegistrarSubActividadForm } from "@/components";
 import { PageProps } from "@/types";
 import { Metadata } from "next";
 
@@ -19,7 +19,7 @@ export default async function CrearSubActividadPage({ params }: PageProps) {
         <span className="text-sm mb-4 block px-2 py-1 rounded-md bg-teal-600 text-white">
           <span className="font-semibold">Crea una tarea para la actividad: </span> {data?.title ?? "No se ha encontrado la actividad"}
         </span>
-        <GestionarSubtareaForm
+        <RegistrarSubActividadForm
           actividadId={id}
         />
       </div>

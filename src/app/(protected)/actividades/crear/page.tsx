@@ -1,4 +1,4 @@
-import { Controls, GestionarTareaForm } from "@/components";
+import { Controls, RegistrarActividadForm } from "@/components";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ export default function CrearActividadPage() {
         <span className="text-sm mb-4 inline-block">
           Aquí podrás crear una nueva actividad para llevar un control de tus tareas diarias.
         </span>
-        <GestionarTareaForm />
+        <RegistrarActividadForm />
       </div>
       <Controls returnLink={`/actividades`} />
     </div>

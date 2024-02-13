@@ -1,4 +1,4 @@
-import { GestionarFuncionarioForm } from "@/components";
+import { RegistrarFuncionarioForm } from "@/components";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export default function CrearActividadPage() {
       <span className="text-sm mb-4 inline-block">
         Ingresa la información solicitada para crear un nuevo funcionario asociado a la entidad.
       </span>
-      <GestionarFuncionarioForm />
+      <RegistrarFuncionarioForm />
     </div>
   );
 }

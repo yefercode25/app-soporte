@@ -1,36 +1,26 @@
 'use client';
 
-import * as yup from 'yup';
-import { ActivityStatus } from "@/types";
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { ActivityStatus, ActualizarEstadoActividad } from "@/types";
+import { actualizarEstadoActividad } from '@/actions';
+import { actualizarEstadoActividadSchema } from '@/lib/yup-schemas';
 import { Controls, Input } from '@/components';
 import { IoReceiptOutline } from 'react-icons/io5';
+import { toaster } from '@/utils/toast';
 import { useEffect, useState } from 'react';
-import { actualizarEstadoActividad } from '@/actions';
-import { toastAlert } from '@/utils/toastAlert';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 interface ActualizarEstadoActividadProps {
   id: string;
   status: ActivityStatus;
 }
 
-interface IActualizarEstadoActividad {
-  status: ActivityStatus;
-}
-
-const actualizarEstadoActividadSchema = yup.object().shape({
-  status: yup.string()
-    .required('El estado es obligatorio')
-    .oneOf(['pendiente', 'en progreso', 'completada', 'pospueta'], 'El estado no es válido')
-});
-
 export const ActualizarEstadoActividadForm = ({ id, status }: ActualizarEstadoActividadProps) => {
   const router = useRouter();
 
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
-  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<IActualizarEstadoActividad>({
+  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<ActualizarEstadoActividad>({
     resolver: yupResolver(actualizarEstadoActividadSchema as any)
   });
 
@@ -38,20 +28,37 @@ export const ActualizarEstadoActividadForm = ({ id, status }: ActualizarEstadoAc
     setValue('status', status);
   }, [status, setValue]);
 
-  const onSubmit = async (data: IActualizarEstadoActividad) => {
+  const onSubmit = async (data: ActualizarEstadoActividad) => {
     try {
       setIsSendingData(true);
+      toaster({
+        tipo: 'loading',
+        title: 'Actializando actividad',
+        description: 'Intentando realizar la actualización del estado de la actividad'
+      });
 
       const updateStatus = await actualizarEstadoActividad(id, data.status);
-      if(updateStatus.statusCode === 200) {
+      if (updateStatus.statusCode === 200) {
         reset();
-        toastAlert({ title: 'Estado actualizado', description: updateStatus.message, tipo: 'success' });
+        toaster({
+          title: 'Estado actualizado',
+          description: updateStatus.message,
+          tipo: 'success'
+        });
         return router.push(`/actividades/${id}`);
       }
 
-      return toastAlert({ title: 'Error actualizar estado', description: updateStatus.message, tipo: 'error' });
+      return toaster({
+        title: 'Error actualizar estado',
+        description: updateStatus.message,
+        tipo: 'error'
+      });
     } catch (error) {
-      toastAlert({ title: 'Error actualizar estado', description: 'Se ha producido un error al actualizar el estado de la actividad, intente nuevamente.', tipo: 'error' });
+      toaster({
+        title: 'Error actualizar estado',
+        description: 'Se ha producido un error al actualizar el estado de la actividad, intente nuevamente.',
+        tipo: 'error'
+      });
     } finally {
       setIsSendingData(false);
     }
@@ -79,10 +86,10 @@ export const ActualizarEstadoActividadForm = ({ id, status }: ActualizarEstadoAc
           ]}
         />
         <div className="mb-3">
-        <button type='submit' disabled={isSendingData} className="mb-2 block w-full text-center text-white bg-blue-600 hover:bg-blue-700 px-2 py-1.5 rounded-md">
-          {isSendingData ? 'Enviando...' : 'Actualizar estado'}
-        </button>
-      </div>
+          <button type='submit' disabled={isSendingData} className="mb-2 block w-full text-center text-white bg-blue-600 hover:bg-blue-700 px-2 py-1.5 rounded-md">
+            {isSendingData ? 'Enviando...' : 'Actualizar estado'}
+          </button>
+        </div>
       </form>
       <Controls returnLink={`/actividades/${id}`} />
     </div>

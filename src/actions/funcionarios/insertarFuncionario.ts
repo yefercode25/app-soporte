@@ -1,17 +1,9 @@
 'use server';
 
+import { RegistrarFuncionario } from "@/types";
 import prisma from "@/lib/prisma";
 
-type Dependency = 'Inspección de policía' | 'Sisben' | 'Personería' | 'Secretaría de gobierno' | 'Secretaría de planeación' | 'Secretaría de hacienda' | 'Secretaría de desarrollo social' | 'Secretaría de desarrollo económico' | 'Oficina de control interno' | 'Comisaría de familia' | 'Secretaría de salud' | 'Secretaría de educación' | 'Secretaría de cultura' | 'Secretaría ejecutiva' | 'Almacén' | 'Sin especificar';
-
-interface InsertarFuncionario {
-  fullName: string;
-  email?: string;
-  phone?: string;
-  dependency: Dependency;
-}
-
-export const insertarFuncionario = async ({ dependency, fullName, email, phone }: InsertarFuncionario) => {
+export const insertarFuncionario = async ({ dependency, fullName, email, phone }: RegistrarFuncionario) => {
   try {
     const funcionario = await prisma.employee.create({
       data: {
