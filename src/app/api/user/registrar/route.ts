@@ -1,13 +1,13 @@
-import { registrarUsuarioSchema } from '@/lib/yupSchemas';
-import prisma from '@/lib/prisma';
-import { hashPassword } from '@/utils';
+import { hashPassword } from '@/utils/hash-password';
 import { NextResponse, NextRequest } from 'next/server';
+import { registrarUsuarioSchema } from '@/lib/yup-schemas';
+import prisma from '@/lib/prisma';
 
 export async function POST(req: Request) {
   try {
     const { email, name, password, lastName } = await registrarUsuarioSchema.validate(await req.json());
-    
-    const findUserByEmail = await prisma.user?.findFirst({ where: { email }});
+
+    const findUserByEmail = await prisma.user?.findFirst({ where: { email } });
     if (findUserByEmail) {
       return NextResponse.json({
         message: `El usuario con el correo ${email} ya está registrado.`,

@@ -1,9 +1,9 @@
 'use client';
 
-import { GrupoActividad } from "@/types";
 import { fechaFormateada, horaFormateada } from "@/utils/dates";
-import Link from "next/link";
+import { GrupoActividad } from "@/types";
 import { IoBusinessOutline, IoCreateOutline, IoEyeOutline, IoPersonOutline, IoRefreshOutline, IoTrashOutline } from "react-icons/io5";
+import Link from "next/link";
 
 interface ActivitiesListProps {
   actividades: GrupoActividad[];

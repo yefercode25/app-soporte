@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
-import { crearActividadSchema } from '@/lib/yupSchemas';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { crearActividadSchema } from '@/lib/yup-schemas';
+import { NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request, res: NextApiResponse) {

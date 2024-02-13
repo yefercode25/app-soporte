@@ -1,9 +1,9 @@
-import { IniciarSesionForm } from "@/components";
-import { authOptions } from "@/lib/authOptions";
-import { Metadata } from "next";
+import { authOptions } from "@/lib/auth-options";
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+import { IniciarSesionForm } from "@/components";
 import { IoLockClosedOutline } from "react-icons/io5";
+import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: 'Iniciar Sesión | App Soporte',

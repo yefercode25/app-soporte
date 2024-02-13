@@ -1,11 +1,11 @@
 'use client';
 
-import { toggleSubActivity } from "@/actions";
-import { SubActivity } from "@/types"
-import { toastAlert } from "@/utils/toastAlert";
 import { fechaFormateada, horaFormateada } from "@/utils/dates";
-import { useState } from "react";
 import { IoCalendarOutline } from "react-icons/io5";
+import { SubActivity } from "@/types"
+import { toaster } from "@/utils/toast";
+import { toggleSubActivity } from "@/actions";
+import { useState } from "react";
 
 export const SubActivyItem = ({ activityId, createdAt, id, isCompleted, title }: SubActivity) => {
   const [completed, setCompleted] = useState(isCompleted);
@@ -15,12 +15,24 @@ export const SubActivyItem = ({ activityId, createdAt, id, isCompleted, title }:
       const updatedSubActivity = await toggleSubActivity(id);
       if (updatedSubActivity.statusCode === 200) {
         setCompleted(!completed);
-        toastAlert({ title: 'Estado actualizado', description: `La tarea ha sido marcada como ${!completed ? 'completada' : 'pendiente'}.`, tipo: 'success'});
+        toaster({
+          title: 'Estado actualizado',
+          description: `La tarea ha sido marcada como ${!completed ? 'completada' : 'pendiente'}.`,
+          tipo: 'success'
+        });
       } else {
-        toastAlert({ title: 'Error estado', description: updatedSubActivity.message, tipo: 'error'});
+        toaster({
+          title: 'Error estado',
+          description: updatedSubActivity.message,
+          tipo: 'error'
+        });
       }
     } catch (error) {
-      toastAlert({ title: 'Error estado', description: 'Se ha producido un error al cambiar el estado de la sub actividad, intente nuevamente.', tipo: 'error'});
+      toaster({
+        title: 'Error estado',
+        description: 'Se ha producido un error al cambiar el estado de la sub actividad, intente nuevamente.',
+        tipo: 'error'
+      });
     }
   };
 
