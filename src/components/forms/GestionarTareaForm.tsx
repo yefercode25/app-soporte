@@ -2,8 +2,8 @@
 
 import { crearActividad, obtenerListadoFuncionarios } from '@/actions';
 import { Input } from '@/components';
-import { crearActividad as crearActividadSchema } from '@/lib/yupSchemas';
-import { GestionarTarea } from '@/types';
+import { crearActividadSchema as crearActividadSchema } from '@/lib/yupSchemas';
+import { GestionarActividad } from '@/types';
 import { toastAlert } from '@/utils/toastAlert';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSession } from 'next-auth/react';
@@ -17,7 +17,7 @@ export const GestionarTareaForm = () => {
   const router = useRouter();
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
   const [listEnployees, setListEmployees] = useState<{ value: string, label: string }[]>([{ label: '', value: 'Sin opciones disponibles' }]);
-  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<GestionarTarea>({
+  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<GestionarActividad>({
     resolver: yupResolver(crearActividadSchema)
   });
 
@@ -37,7 +37,7 @@ export const GestionarTareaForm = () => {
     getListaEmpleados();
   }, [session, setValue]);
 
-  const onSubmit = async (data: GestionarTarea) => {
+  const onSubmit = async (data: GestionarActividad) => {
     setIsSendingData(true);
 
     const response = crearActividad(data);

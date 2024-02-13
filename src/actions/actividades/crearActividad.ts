@@ -1,10 +1,10 @@
 'use server';
 
 import prisma from "@/lib/prisma";
-import { GestionarTarea } from "@/types";
+import { GestionarActividad } from "@/types";
 import { convertToISO } from "@/utils/dates";
 
-export const crearActividad = async (actividad: GestionarTarea) => {
+export const crearActividad = async (actividad: GestionarActividad) => {
   try {
     const { createdAt, employeeId, priority, title, userId, observation, posponedAt } = actividad;
     const isoDate = convertToISO(createdAt);

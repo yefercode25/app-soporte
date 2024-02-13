@@ -1,3 +1,3 @@
-export * from './apiResponse';
+export * from './api-response';
 export * from './forms';
-export * from './pageProps';
+export * from './page-props';

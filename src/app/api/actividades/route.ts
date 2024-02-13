@@ -1,11 +1,11 @@
 import prisma from '@/lib/prisma';
-import { crearActividad } from '@/lib/yupSchemas';
+import { crearActividadSchema } from '@/lib/yupSchemas';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request, res: NextApiResponse) {
   try {
-    const { createdAt, priority, title, userId, employeeId, observation, posponedAt } = await crearActividad.validate(await req.json());
+    const { createdAt, priority, title, userId, employeeId, observation, posponedAt } = await crearActividadSchema.validate(await req.json());
     
     const findUser = await prisma.user.findUnique({ where: { id: userId }});
     if (!findUser) {
