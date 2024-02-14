@@ -7,7 +7,7 @@ interface Props {
 
 export const ListadoFuncionarios = ({ funcionarios }: Props) => {
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {funcionarios.map((funcionario) => (
         <FuncionarioItem
           key={funcionario.id}
