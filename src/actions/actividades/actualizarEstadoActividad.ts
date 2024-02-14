@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { ActivityStatus } from "@/types";
+import { convertToISO } from "@/utils/dates";
 
 export const actualizarEstadoActividad = async (id: string, status: ActivityStatus) => {
   try {
@@ -16,9 +17,14 @@ export const actualizarEstadoActividad = async (id: string, status: ActivityStat
       }
     }
 
+    const completedAt = status === 'completada' ? convertToISO(new Date().toISOString()) : null;
+
     const actividad = await prisma.activity.update({
       where: { id },
-      data: { status }
+      data: { 
+        status,
+        completedAt
+      }
     });
 
     return {

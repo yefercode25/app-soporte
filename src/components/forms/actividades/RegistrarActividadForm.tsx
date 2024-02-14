@@ -1,6 +1,6 @@
 'use client';
 
-import { crearActividad, obtenerListadoFuncionarios } from '@/actions';
+import { crearActividad, listarFuncionarios } from '@/actions';
 import { crearActividadSchema } from '@/lib/yup-schemas';
 import { GestionarActividad } from '@/types';
 import { Input } from '@/components';
@@ -27,7 +27,7 @@ export const RegistrarActividadForm = () => {
     setValue('userId', session?.data?.user?.id || '');
 
     const getListaEmpleados = async () => {
-      const listado = await obtenerListadoFuncionarios();
+      const listado = await listarFuncionarios();
       if (listado.statusCode !== 200) {
         toaster({
           tipo: 'error',
@@ -36,7 +36,7 @@ export const RegistrarActividadForm = () => {
         });
       }
 
-      const selectData = (listado).data?.funcionarios?.map((func: any) => ({ label: func?.fullName, value: func?.id }));
+      const selectData = (listado).data?.map((func: any) => ({ label: func?.fullName, value: func?.id }));
       setListEmployees(selectData);
     };
 

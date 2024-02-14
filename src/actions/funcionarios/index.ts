@@ -1,2 +1,2 @@
 export * from './insertarFuncionario';
-export * from './obtenerListadoFuncionarios';
+export * from './listarFuncionarios';

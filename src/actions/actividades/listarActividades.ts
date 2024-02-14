@@ -1,6 +1,6 @@
 'use server';
 
-import { authOptions } from "@/lib/authOptions";
+import { authOptions } from "@/lib/auth-options";
 import prisma from "@/lib/prisma";
 import dayjs from "dayjs";
 import { getServerSession } from 'next-auth';

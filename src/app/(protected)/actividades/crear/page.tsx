@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function CrearActividadPage() {
   return (
     <div>
-      <div className="text-gray-800">
+      <div className="text-white">
         <h1 className="font-bold text-2xl">Crear nueva actividad</h1>
         <span className="text-sm mb-4 inline-block">
           Aquí podrás crear una nueva actividad para llevar un control de tus tareas diarias.

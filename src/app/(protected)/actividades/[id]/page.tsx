@@ -22,7 +22,7 @@ export default async function VerActividadPage({ params }: PageProps) {
 
   return (
     <div>
-      <div className="flex flex-col items-start gap-2">
+      <div className="flex flex-col items-start gap-2 text-white">
         <span
           className={`text-xs ${actividad.status === 'pendiente' ? 'bg-red-600' : (actividad.status === 'en progreso') ? 'bg-orange-600' : (actividad.status === 'completada') ? 'bg-green-600' : 'bg-blue-600'} text-white px-3 py-1 rounded-full`}
         >
@@ -46,13 +46,13 @@ export default async function VerActividadPage({ params }: PageProps) {
           <span
             className={`text-xs bg-green-600 text-white px-3 py-1 rounded-full`}
           >
-            <span className="font-bold">Completada el: </span> {fechaFormateada(actividad.createdAt.toISOString())}
+            <span className="font-bold">Completada el: </span> {fechaFormateada(actividad.completedAt.toISOString())}
           </span>
         )}
-        <h1 className="text-2xl font-extrabold text-gray-800"> {actividad.title}</h1>
+        <h1 className="text-2xl font-extrabold"> {actividad.title}</h1>
       </div>
-      <p className="font-medium mt-2 text-gray-500">{actividad?.observation || 'Sin observaciones'}</p>
-      <div className="mt-2">
+      <p className="font-medium mt-2 text-gray-300">{actividad?.observation || 'Sin observaciones'}</p>
+      <div className="mt-4">
         <div className="flex items-center text-sm px-2 py-1 bg-cyan-600 text-white mb-1 rounded-md">
           <span className="flex items-center"><IoCalendarOutline /></span>
           <p className="ml-2"><span className="font-semibold">Creada el: </span> {fechaFormateada(actividad.createdAt.toISOString())}</p>
@@ -72,7 +72,7 @@ export default async function VerActividadPage({ params }: PageProps) {
           <span className="bg-blue-600 font-semibold px-2 py-1 rounded-full text-white text-xs">{(subActividades)?.length || 0} registradas</span>
         </div>
 
-        <div className="mt-4 rounded-md shadow bg-gray-50 px-2 py-2">
+        <div className="mt-4">
           {subActividades.length > 0 ? (
             <div className="mt-2">
               {subActividades.map((subActividad: any) => (

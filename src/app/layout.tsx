@@ -1,11 +1,11 @@
+import { Poppins } from "next/font/google";
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
 import { Sidebar } from "@/components";
 import { Toaster } from "sonner";
-import "./globals.css";
 import { AuthProvider } from "@/providers";
+import "./globals.css";
 
-const montserrat = Montserrat({
+const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
 });
@@ -24,12 +24,12 @@ export default async function RootLayout({
   
   return (
     <html lang="es-CO">
-      <body className={montserrat.className}>
+      <body className={poppins.className}>
         <AuthProvider>
           <div className="min-h-screen bg-gray-200">
             <Sidebar />
             <div className="xl:p-4 xl:ml-80">
-              <div className="px-5 py-5 xl:rounded-xl w-full text-gray-800 h-[calc(100lvh-32px)] xl:shadow bg-white overflow-y-auto scrollbar">
+              <div className="px-5 py-5 xl:rounded-xl w-full text-white h-[100lvh] xl:h-[calc(100lvh-32px)] xl:shadow bg-gray-800 overflow-y-auto scrollbar">
                 {children}
               </div>
             </div>
@@ -40,7 +40,7 @@ export default async function RootLayout({
               position={'bottom-right'}
               duration={3000}
               style={{
-                fontFamily: 'Montserrat, sans-serif',
+                fontFamily: 'Poppins, sans-serif',
               }}
             />
           </div>

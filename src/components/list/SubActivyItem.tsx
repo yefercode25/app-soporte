@@ -37,12 +37,12 @@ export const SubActivyItem = ({ activityId, createdAt, id, isCompleted, title }:
   };
 
   return (
-    <div className="flex items-center gap-1 p-2 border-b border-gray-500 last-of-type:border-b-0">
+    <div className="flex items-center gap-1 p-2 border-b border-gray-300 last-of-type:border-b-0">
       <div>
         <label className="inline-flex items-center mt-3">
           <input
             type="checkbox"
-            className="form-checkbox h-5 w-5 text-gray-600"
+            className="form-checkbox h-6 w-6"
             checked={completed}
             onChange={() => toggleCompleted()}
           />
@@ -50,7 +50,7 @@ export const SubActivyItem = ({ activityId, createdAt, id, isCompleted, title }:
         </label>
       </div>
       <div>
-        <h3 className={`font-semibold ${completed ? 'text-green-800 line-through' : ''}`}>{title}</h3>
+        <h3 className={`font-semibold ${completed ? 'text-green-500 line-through' : ''}`}>{title}</h3>
         <p className="text-gray-500 text-sm flex items-center gap-1"><IoCalendarOutline /> <span className={completed ? 'line-through' : ''}>{fechaFormateada(createdAt.toISOString())}, {horaFormateada(createdAt.toISOString())}</span></p>
       </div>
     </div>

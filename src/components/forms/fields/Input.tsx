@@ -16,11 +16,11 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
 const Input = forwardRef<HTMLInputElement, Props>(({ title, icon, name, placeholder, id, onChange, type, isOptional, autoComplete, errors, selectOptions }: Props, ref) => {
   return (
     <div className="mb-4">
-      <label htmlFor={id} className="mb-1 text-base font-bold flex gap-2 items-center">
+      <label htmlFor={id} className="mb-1 text-base font-bold flex gap-2 items-center text-white">
         {title}
         {isOptional && (<span className="text-xs inline-block bg-blue-600 text-white px-2 py-[2px] rounded-md">Opcional</span>)}
       </label>
-      <div className="flex items-center justify-start border py-2  border-gray-700 px-3 rounded-md text-gray-800">
+      <div className="flex items-center justify-start border py-2  bg-white border-gray-700 px-3 rounded-md text-gray-800">
         <div className="border-r pr-2 h-full">
           {icon}
         </div>
@@ -56,14 +56,14 @@ const Input = forwardRef<HTMLInputElement, Props>(({ title, icon, name, placehol
             onChange={onChange as any}
           >
             <option value="">{placeholder}</option>
-            {selectOptions!.map((option, index) => (
+            {selectOptions?.map((option, index) => (
               <option key={index} value={option.value}>{option.label}</option>
             ))}
           </select>
         )}
       </div>
       {errors![name as any] && (
-        <div className="bg-rose-700 text-sm mt-1 text-white flex items-center gap-2 px-2 py-1 rounded-md">
+        <div className="bg-rose-600 text-xs mt-1 text-white flex items-center gap-2 px-2 py-1 rounded-md">
           <IoWarningOutline />
           {String(errors![name as any]?.message)}
         </div>

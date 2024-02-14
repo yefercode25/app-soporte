@@ -14,7 +14,7 @@ export default async function CrearSubActividadPage({ params }: PageProps) {
 
   return (
     <div>
-      <div className="text-gray-800">
+      <div>
         <h1 className="font-bold text-2xl mb-1">Crear tarea</h1>
         <span className="text-sm mb-4 block px-2 py-1 rounded-md bg-teal-600 text-white">
           <span className="font-semibold">Crea una tarea para la actividad: </span> {data?.title ?? "No se ha encontrado la actividad"}

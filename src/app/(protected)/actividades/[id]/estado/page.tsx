@@ -8,7 +8,7 @@ export default async function EstadoActividadPage({ params }: PageProps) {
 
   return (
     <div>
-      <div className="text-gray-800">
+      <div className="text-white">
         <h1 className="font-bold text-2xl mb-1">Actualizar estado de tarea</h1>
         <span className="text-sm mb-4 block px-2 py-1 rounded-md bg-teal-600 text-white">
           <span className="font-semibold">Cambia el estado de la actividad: </span> {data?.title ?? "No se ha encontrado la actividad"}

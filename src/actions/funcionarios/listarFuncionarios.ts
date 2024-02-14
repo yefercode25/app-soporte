@@ -2,15 +2,13 @@
 
 import prisma from "@/lib/prisma";
 
-export const obtenerListadoFuncionarios = async () => {
+export const listarFuncionarios = async () => {
   try {
     const funcionarios = await prisma.employee.findMany();
 
     return {
       message: 'Listado de funcionarios',
-      data: {
-        funcionarios
-      },
+      data: funcionarios,
       statusCode: 200,
       statusText: 'OK'
     }

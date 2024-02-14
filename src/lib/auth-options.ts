@@ -1,4 +1,4 @@
-import { comparePassword } from "@/utils";
+import { comparePassword } from "@/utils/hash-password";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
 import { Adapter } from "next-auth/adapters";
