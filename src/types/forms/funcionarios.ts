@@ -4,3 +4,7 @@ export interface RegistrarFuncionario {
   phone?: string;
   dependency: string;
 }
+
+export interface EditarFuncionario extends RegistrarFuncionario {
+  id: string;
+}

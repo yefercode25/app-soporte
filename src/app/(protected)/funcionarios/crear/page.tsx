@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function CrearActividadPage() {
   return (
-    <div className="text-gray-800">
+    <div>
       <h1 className="font-bold text-2xl">Crear nuevo funcionario</h1>
       <span className="text-sm mb-4 inline-block">
         Ingresa la información solicitada para crear un nuevo funcionario asociado a la entidad.

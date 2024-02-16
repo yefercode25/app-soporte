@@ -13,3 +13,7 @@ export interface GestionarActividad {
 export interface ActualizarEstadoActividad {
   status: ActivityStatus;
 }
+
+export interface EditarActividad extends GestionarActividad {
+  id: string;
+}

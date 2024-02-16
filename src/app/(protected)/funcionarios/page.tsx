@@ -1,6 +1,12 @@
 import { listarFuncionarios } from '@/actions';
 import { AddItemButton, Controls, ListadoFuncionarios } from '@/components';
 import { APIResponse, Funcionario } from '@/types';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Listado de funcionarios | App Soporte',
+  description: 'Listado de funcionarios registrados en la aplicación',
+};
 
 export default async function FuncionariosPage() {
   const listadoFuncionarios = await listarFuncionarios();

@@ -2,14 +2,14 @@
 
 import { dataDependencias } from '@/lib/data';
 import { Input } from '@/components';
-import { insertarFuncionario } from '@/actions';
+import { editarFuncionario, insertarFuncionario } from '@/actions';
 import { IoAtOutline, IoBusinessOutline, IoCallOutline, IoPersonAddOutline } from 'react-icons/io5';
-import { RegistrarFuncionario } from '@/types';
-import { registrarFuncionarioSchema } from '@/lib/yup-schemas';
+import { EditarFuncionario, Funcionario } from '@/types';
+import { editarFuncionarioSchema } from '@/lib/yup-schemas';
 import { toaster } from '@/utils/toast';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const formatDependencies = dataDependencias.map((dep: string) => ({
@@ -17,30 +17,42 @@ const formatDependencies = dataDependencias.map((dep: string) => ({
   label: dep
 }));
 
-export const RegistrarFuncionarioForm = () => {
+interface Props {
+  funcionario: Funcionario;
+}
+
+export const EditarFuncionarioForm = ({ funcionario }: Props) => {
   const router = useRouter();
 
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
-  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<RegistrarFuncionario>({
-    resolver: yupResolver(registrarFuncionarioSchema),
+  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<EditarFuncionario>({
+    resolver: yupResolver(editarFuncionarioSchema),
   });
 
-  const onSubmit = async (data: RegistrarFuncionario) => {
+  useEffect(() => {
+    setValue('id', funcionario.id);
+    setValue('fullName', funcionario.fullName);
+    setValue('email', funcionario.email);
+    setValue('phone', funcionario.phone);
+    setValue('dependency', funcionario.dependency);
+  }, [funcionario, setValue]);
+
+  const onSubmit = async (data: EditarFuncionario) => {
     setIsSendingData(true);
     toaster({
       tipo: 'loading',
-      title: 'Registrando funcionario',
-      description: 'Se está intentando registrar el nuevo funcionario'
+      title: 'Actualizando funcionario',
+      description: 'Se está intentando actualizar el funcionario'
     });
 
     try {
-      const crearFuncionario = await insertarFuncionario({ ...data, dependency: data.dependency });
+      const crearFuncionario = await editarFuncionario({ ...data, dependency: data.dependency });
 
-      if (crearFuncionario.statusCode === 201) {
+      if (crearFuncionario.statusCode === 200) {
         reset();
         toaster({
           tipo: 'success',
-          title: 'Registro exitoso',
+          title: 'Actualización exitoso',
           description: crearFuncionario.message
         });
 
@@ -49,19 +61,18 @@ export const RegistrarFuncionarioForm = () => {
 
       return toaster({
         tipo: 'error',
-        title: 'Error al registrar funcionario',
+        title: 'Error al actualizar funcionario',
         description: crearFuncionario.message
       });
     } catch (error: any) {
       toaster({
         tipo: 'error',
-        title: 'Error al registrar funcionario',
-        description: 'No se ha podido registrar el funcionario, por favor intenta nuevamente.'
+        title: 'Error al actualizar funcionario',
+        description: 'No se ha podido actualizar el funcionario, por favor intenta nuevamente.'
       });
     } finally {
       setIsSendingData(false);
     }
-
   };
 
   return (
@@ -108,7 +119,7 @@ export const RegistrarFuncionarioForm = () => {
       />
       <div className="mb-3">
         <button type='submit' disabled={isSendingData} className="mb-2 block w-full text-center text-white bg-blue-600 hover:bg-blue-700 px-2 py-1.5 rounded-md">
-          {isSendingData ? 'Enviando...' : 'Crear funcionario'}
+          {isSendingData ? 'Actualizanco...' : 'Actualizar funcionario'}
         </button>
       </div>
     </form>
