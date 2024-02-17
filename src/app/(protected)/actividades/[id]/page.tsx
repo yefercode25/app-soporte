@@ -35,13 +35,6 @@ export default async function VerActividadPage({ params }: PageProps) {
             <span className="font-bold">Prioridad: </span> {actividad?.priority || 'No definido'}
           </span>
         )}
-        {actividad.status !== 'completada' && (
-          <span
-            className={`text-xs ${actividad.priority === 'alta' ? 'bg-red-600' : 'bg-blue-600'} text-white px-3 py-1 rounded-full`}
-          >
-            <span className="font-bold">Prioridad: </span> {actividad?.priority || 'No definido'}
-          </span>
-        )}
         {actividad.status === 'completada' && (
           <span
             className={`text-xs bg-green-600 text-white px-3 py-1 rounded-full`}

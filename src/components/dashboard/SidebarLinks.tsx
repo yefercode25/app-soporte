@@ -7,7 +7,7 @@ const generalMenuItems = [
   { titulo: 'Actividades', icono: <IoTicketOutline />, ruta: '/actividades' },
   { titulo: 'Funcionarios', icono: <IoPersonAddOutline />, ruta: '/funcionarios' },
   { titulo: 'Equipos', icono: <IoDesktopOutline />, ruta: '/equipos' },
-  { titulo: 'Red', icono: <IoGlobeOutline />, ruta: '/equipos' },
+  { titulo: 'Red', icono: <IoGlobeOutline />, ruta: '/red' },
 ]
 
 const categoriesMenuItems = [
