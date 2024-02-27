@@ -21,9 +21,13 @@ model Activity {
   status      String    @default("pendiente") // pendiente, en progreso, completada, pospueta
   userId      String
   employeeId  String?
+  imagesId    String?
+  printerId   String?
+  computerId  String?
 
   user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   employee    Employee?     @relation(fields: [employeeId], references: [id])
+  images      Image?        @relation(fields: [imagesId], references: [id])
   SubActivity SubActivity[]
 }
 
@@ -48,43 +52,58 @@ model Employee {
 }
 
 model Computer {
-  id          String       @id @default(cuid())
+  id          String   @id @default(cuid())
   brand       String
   model       String
   serial      String
+  processor   String
   ram         Float
   storage     Float
-  processor   String
   os          String
   peripherals String[]
-  type        String       @default("desktop") // laptop, desktop, server
-  status      String       @default("activo") // activo, inactivo, en reparación
-  Assignment  Assignment[]
+  type        String   @default("desktop") // laptop, desktop, server
+  status      String   @default("activo") // activo, inactivo, en reparación
+  imageId     String?
+
+  imageRel         Image?             @relation(fields: [imageId], references: [id])
+  AssignedComputer AssignedComputer[]
 }
 
 model Printer {
-  id         String       @id @default(cuid())
+  id         String  @id @default(cuid())
   brand      String
   model      String
   serial     String
   inkDetails String
-  type       String       @default("laser") // laser, inyección, matriz
-  status     String       @default("activo") // activo, inactivo, en reparación
-  Assignment Assignment[]
+  type       String  @default("laser") // laser, inyección, matriz
+  status     String  @default("activo") // activo, inactivo, en reparación
+  imageId    String?
+
+  imageRel Image? @relation(fields: [imageId], references: [id])
 }
 
-model Assignment {
-  id               String  @id @default(cuid())
-  computerUser     String
-  computerPassword String
-  observation      String?
-  computerId       String
-  printerId        String?
-  userId           String
+model AssignedComputer {
+  id           String  @id @default(cuid())
+  location     String
+  observations String?
+  userPc       String
+  password     String
+  anydeskCode  String
+  userId       String
+  computerId   String
 
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  computer Computer @relation(fields: [computerId], references: [id], onDelete: Cascade)
-  printer  Printer? @relation(fields: [printerId], references: [id], onDelete: Cascade)
+  userCuid User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  computer Computer? @relation(fields: [computerId], references: [id])
+}
+
+model Image {
+  id           String @id @default(cuid())
+  cloudinaryId String
+  secureUrl    String
+
+  Printer  Printer[]
+  Computer Computer[]
+  Activity Activity[]
 }
 
 // Auth New Models
@@ -116,19 +135,19 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
   lastName      String?
   password      String?
-  roles         String[]     @default(["user"])
-  isActive      Boolean      @default(true)
-  email         String?      @unique
+  roles         String[]  @default(["user"])
+  isActive      Boolean   @default(true)
+  email         String?   @unique
   emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  Activity      Activity[]
-  Assignment    Assignment[]
+
+  Activity         Activity[]
+  AssignedComputer AssignedComputer[]
+  Account          Account[]
+  Session          Session[]
 }
 
 model VerificationToken {
