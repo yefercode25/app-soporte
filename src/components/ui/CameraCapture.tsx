@@ -14,14 +14,24 @@ export const CameraCapture = () => {
   const [isCameraActive, setIsCameraActive] = useState<boolean>(false);
   const [deviceId, setDeviceId] = useState<{ deviceId: string }>({ deviceId: '' });
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  const [resetCamera, setResetCamera] = useState<boolean>(false);
 
   const handleCapture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImageSrc(imageSrc);
   }
 
+  const handleCameraChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setDeviceId({ deviceId: event.target.value });
+    setResetCamera(true);
+    setTimeout(() => {
+      setResetCamera(false);
+    }, 500);
+  };
+
   useEffect(() => {
     const handleDevices = (mediaDevices: MediaDeviceInfo[]) => {
+      const videoDevices = mediaDevices.filter(({ kind }) => kind === 'videoinput');
       setDevices(mediaDevices.filter(({ kind }) => kind === 'videoinput'));
     };
 
@@ -30,7 +40,12 @@ export const CameraCapture = () => {
 
   useEffect(() => {
     if (devices.length > 0) {
-      setDeviceId({ deviceId: devices[0].deviceId });
+      const backCamera = devices.find(device => device.label.toLowerCase().includes('back'));
+      if (backCamera) {
+        setDeviceId({ deviceId: backCamera.deviceId });
+      } else {
+        setDeviceId({ deviceId: devices[0].deviceId });
+      }
     }
   }, [devices]);
 
@@ -49,9 +64,9 @@ export const CameraCapture = () => {
         <div className="flex justify-center mt-4 flex-col items-center">
           <div className="text-gray-800 w-full mb-4">
             <h3 className="font-bold">Selecciona la cámara a utilizar</h3>
-            <select 
+            <select
               value={deviceId.deviceId}
-              onChange={(e) => setDeviceId({ deviceId: e.target.value })}
+              onChange={handleCameraChange}
               className="w-full p-2 rounded-md border border-gray-300"
             >
               {devices.map((device, index) => (
@@ -60,27 +75,31 @@ export const CameraCapture = () => {
             </select>
           </div>
 
-          <Webcam
-            audio={false}
-            videoConstraints={{
-              width: 1000,
-              height: 562.5,
-              facingMode: "user",
-              deviceId: deviceId.deviceId
-            }}
-            ref={webcamRef}
-            screenshotFormat="image/png"
-            className="rounded-md"
-            height={562.5}
-            width={1000}
-          />
-          <button
-            type="button"
-            onClick={() => handleCapture()}
-            className="mt-4 flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-md"
-          >
-            <MdOutlineCamera /> Realizar captura
-          </button>
+          {!resetCamera && (
+            <>
+              <Webcam
+                audio={false}
+                videoConstraints={{
+                  width: 1000,
+                  height: 562.5,
+                  facingMode: "user",
+                  deviceId: deviceId.deviceId
+                }}
+                ref={webcamRef}
+                screenshotFormat="image/png"
+                className="rounded-md aspect-video"
+                height={562.5}
+                width={1000}
+              />
+              <button
+                type="button"
+                onClick={() => handleCapture()}
+                className="mt-4 flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-md"
+              >
+                <MdOutlineCamera /> Realizar captura
+              </button>
+            </>
+          )}
         </div>
       )}
       {imageSrc && (
