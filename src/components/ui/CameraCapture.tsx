@@ -1,56 +1,36 @@
 'use client';
 
-import { toaster } from "@/utils/toast";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { HiOutlineTrash } from "react-icons/hi";
-import { IoCamera } from "react-icons/io5";
-import { MdOutlineCamera } from "react-icons/md";
-import Webcam from "react-webcam";
+import React, { useState, useEffect, useRef } from 'react';
+import Webcam from 'react-webcam';
+import { HiOutlineTrash } from 'react-icons/hi';
+import { IoCamera } from 'react-icons/io5';
+import { MdOutlineCamera } from 'react-icons/md';
+import Image from 'next/image';
 
 export const CameraCapture = () => {
-  const webcamRef = useRef(null) as any;
-
+  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  const [selectedDeviceId, setSelectedDeviceId] = useState<string | undefined>(undefined);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [isCameraActive, setIsCameraActive] = useState<boolean>(false);
-  const [deviceId, setDeviceId] = useState<{ deviceId: string }>({ deviceId: '' });
-  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
-  const [resetCamera, setResetCamera] = useState<boolean>(false);
+  const webcamRef = useRef<Webcam>(null);
 
   const handleCapture = () => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    setImageSrc(imageSrc);
-  }
+    const imageSrc = webcamRef.current?.getScreenshot();
+    setImageSrc(imageSrc || null);
+  };
 
   const handleCameraChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setDeviceId({ deviceId: event.target.value });
-    setResetCamera(true);
-    setTimeout(() => {
-      setResetCamera(false);
-    }, 500);
+    setSelectedDeviceId(event.target.value);
   };
 
   useEffect(() => {
-    const handleDevices = async () => {
-      const searchDevicesInDesktop = await navigator.mediaDevices?.enumerateDevices() || [];
-
-      const videoDevices = searchDevicesInDesktop.filter(({ kind }) => kind === 'videoinput');
-      setDevices(videoDevices.filter(({ kind }) => kind === 'videoinput'));
-    };
-
-    handleDevices();
+    navigator.mediaDevices.enumerateDevices().then(devices => {
+      const videoDevices = devices.filter(device => device.kind === 'videoinput');
+      setDevices(videoDevices);
+      const backCamera = videoDevices.find(device => device.label.toLowerCase().includes('back'));
+      setSelectedDeviceId(backCamera?.deviceId);
+    });
   }, []);
-
-  useEffect(() => {
-    if (devices.length > 0) {
-      const backCamera = devices.find(device => device.label.toLowerCase().includes('back'));
-      if (backCamera) {
-        setDeviceId({ deviceId: backCamera.deviceId });
-      } else {
-        setDeviceId({ deviceId: devices[0].deviceId });
-      }
-    }
-  }, [devices]);
 
   return (
     <div className="p-3 bg-white rounded-md">
@@ -60,7 +40,7 @@ export const CameraCapture = () => {
           onClick={() => setIsCameraActive(!isCameraActive)}
           className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md"
         >
-          <IoCamera /> {isCameraActive ? "Ocultar cámara" : "Tomar fotografía"}
+          <IoCamera /> {isCameraActive ? 'Ocultar cámara' : 'Tomar fotografía'}
         </button>
       </div>
       {isCameraActive && !imageSrc && (
@@ -68,7 +48,7 @@ export const CameraCapture = () => {
           <div className="text-gray-800 w-full mb-4">
             <h3 className="font-bold">Selecciona la cámara a utilizar</h3>
             <select
-              value={deviceId.deviceId}
+              value={selectedDeviceId || ''}
               onChange={handleCameraChange}
               className="w-full p-2 rounded-md border border-gray-300"
             >
@@ -77,31 +57,25 @@ export const CameraCapture = () => {
               ))}
             </select>
           </div>
-
-          <div className="text-gray-800 text-wrap">
-            {JSON.stringify(devices, null, 2)}
-          </div>
-
-          {!resetCamera && (
+          {!imageSrc && (
             <>
               <Webcam
                 audio={false}
                 videoConstraints={{
                   width: 1000,
                   height: 562.5,
-                  facingMode: "user",
-                  deviceId: devices.find(device => device.label.toLowerCase().includes('back'))?.deviceId || deviceId.deviceId
+                  facingMode: 'user',
+                  deviceId: selectedDeviceId,
                 }}
                 ref={webcamRef}
                 screenshotFormat="image/png"
                 className="rounded-md aspect-video"
                 height={562.5}
-                width={1000} 
-
+                width={1000}
               />
               <button
                 type="button"
-                onClick={() => handleCapture()}
+                onClick={handleCapture}
                 className="mt-4 flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-md"
               >
                 <MdOutlineCamera /> Realizar captura
@@ -130,5 +104,5 @@ export const CameraCapture = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
