@@ -62,8 +62,9 @@ export const CameraCapture = () => {
               <Webcam
                 audio={false}
                 videoConstraints={{
-                  width: 1000,
-                  height: 562.5,
+                  width: { ideal: 1000 },
+                  height: { ideal: 562.5 },
+                  facingMode: 'environment', // Utiliza la cámara trasera si está disponible
                   deviceId: selectedDeviceId,
                 }}
                 ref={webcamRef}
@@ -72,6 +73,7 @@ export const CameraCapture = () => {
                 height={562.5}
                 width={1000}
               />
+
               <button
                 type="button"
                 onClick={handleCapture}
