@@ -1,5 +1,6 @@
 'use client';
 
+import { toaster } from "@/utils/toast";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
@@ -30,12 +31,14 @@ export const CameraCapture = () => {
   };
 
   useEffect(() => {
-    const handleDevices = (mediaDevices: MediaDeviceInfo[]) => {
-      const videoDevices = mediaDevices.filter(({ kind }) => kind === 'videoinput');
-      setDevices(mediaDevices.filter(({ kind }) => kind === 'videoinput'));
+    const handleDevices = async () => {
+      const searchDevicesInDesktop = await navigator.mediaDevices?.enumerateDevices() || [];
+
+      const videoDevices = searchDevicesInDesktop.filter(({ kind }) => kind === 'videoinput');
+      setDevices(videoDevices.filter(({ kind }) => kind === 'videoinput'));
     };
 
-    navigator.mediaDevices.enumerateDevices().then(handleDevices);
+    handleDevices();
   }, []);
 
   useEffect(() => {
@@ -75,6 +78,10 @@ export const CameraCapture = () => {
             </select>
           </div>
 
+          <div className="text-gray-800 text-wrap">
+            {JSON.stringify(devices, null, 2)}
+          </div>
+
           {!resetCamera && (
             <>
               <Webcam
@@ -83,13 +90,14 @@ export const CameraCapture = () => {
                   width: 1000,
                   height: 562.5,
                   facingMode: "user",
-                  deviceId: deviceId.deviceId
+                  deviceId: devices.find(device => device.label.toLowerCase().includes('back'))?.deviceId || deviceId.deviceId
                 }}
                 ref={webcamRef}
                 screenshotFormat="image/png"
                 className="rounded-md aspect-video"
                 height={562.5}
-                width={1000}
+                width={1000} 
+
               />
               <button
                 type="button"
