@@ -15,7 +15,10 @@ export const CameraCapture = () => {
   const webcamRef = useRef<Webcam>(null);
 
   const handleCapture = () => {
-    const imageSrc = webcamRef.current?.getScreenshot();
+    const imageSrc = webcamRef.current?.getScreenshot({
+      width: 1000,
+      height: 562.5,
+    });
     setImageSrc(imageSrc || null);
   };
 
@@ -65,6 +68,7 @@ export const CameraCapture = () => {
                   width: { ideal: 1000 },
                   height: { ideal: 562.5 },
                   facingMode: 'environment', // Utiliza la cámara trasera si está disponible
+                  aspectRatio: 16 / 9, // Especifica la relación de aspecto 16:9
                   deviceId: selectedDeviceId,
                 }}
                 ref={webcamRef}
