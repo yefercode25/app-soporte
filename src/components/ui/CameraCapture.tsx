@@ -64,7 +64,6 @@ export const CameraCapture = () => {
                 videoConstraints={{
                   width: 1000,
                   height: 562.5,
-                  facingMode: 'user',
                   deviceId: selectedDeviceId,
                 }}
                 ref={webcamRef}
