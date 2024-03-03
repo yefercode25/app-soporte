@@ -134,16 +134,18 @@ export const CameraCapture = ({ setUploadingImage }: Props) => {
               <Webcam
                 audio={false}
                 videoConstraints={{
-                  width: { ideal: 1000 },
-                  height: { ideal: 562.5 },
                   facingMode: 'environment', // Utiliza la cámara trasera si está disponible
                   deviceId: selectedDeviceId,
+                  width: { ideal: 1000 },
                 }}
                 ref={webcamRef}
                 screenshotFormat="image/png"
                 className="rounded-md aspect-video"
                 height={'auto'}
                 width={'100%'}
+                style={{
+                  objectFit: 'cover',
+                }}
               />
               <button
                 type="button"
