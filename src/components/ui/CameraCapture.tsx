@@ -40,10 +40,7 @@ export const CameraCapture = ({ setUploadingImage }: Props) => {
   }, []);
 
   const handleCapture = () => {
-    const imageSrc = webcamRef.current?.getScreenshot({
-      width: 1000,
-      height: 562.5,
-    });
+    const imageSrc = webcamRef.current?.getScreenshot();
     setImageSrc(imageSrc || null);
   };
 
@@ -137,10 +134,11 @@ export const CameraCapture = ({ setUploadingImage }: Props) => {
                   facingMode: 'environment', // Utiliza la cámara trasera si está disponible
                   deviceId: selectedDeviceId,
                   width: { ideal: 1000 },
+                  height: { ideal: 562.5 },
                 }}
                 ref={webcamRef}
                 screenshotFormat="image/png"
-                className="rounded-md aspect-video"
+                className="rounded-md"
                 height={'auto'}
                 width={'100%'}
                 style={{
@@ -160,7 +158,6 @@ export const CameraCapture = ({ setUploadingImage }: Props) => {
       )}
       {!isUploaded && !croppedImage && imageSrc && (
         <div className='mt-4'>
-          <Image src={imageSrc} alt="Imagen capturada" width={1000} height={562.5} />
           <Cropper
             image={imageSrc}
             crop={crop}
@@ -171,19 +168,19 @@ export const CameraCapture = ({ setUploadingImage }: Props) => {
             style={{
               containerStyle: {
                 width: '100%',
-                height: '400px',
+                height: '300px',
                 position: 'relative',
-                objectFit: 'contain',
+                objectFit: 'cover',
                 aspectRatio: 16 / 9,
               },
               mediaStyle: {
                 width: 'auto',
                 height: 'auto',
-                objectFit: 'contain',
+                objectFit: 'cover',
               },
             }}
             rotation={rotation}
-
+            aspect={16 / 9}
           />
           <div className='flex justify-between gap-2'>
             <button
