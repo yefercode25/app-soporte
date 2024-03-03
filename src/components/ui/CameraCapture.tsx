@@ -160,6 +160,7 @@ export const CameraCapture = ({ setUploadingImage }: Props) => {
       )}
       {!isUploaded && !croppedImage && imageSrc && (
         <div className='mt-4'>
+          <Image src={imageSrc} alt="Imagen capturada" width={1000} height={562.5} />
           <Cropper
             image={imageSrc}
             crop={crop}
