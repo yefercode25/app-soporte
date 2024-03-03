@@ -1,4 +1,6 @@
-import { AddItemButton, Controls } from "@/components";
+import { listarEquipos } from "@/actions/equipos";
+import { AddItemButton, Controls, ListadoEquipos } from "@/components";
+import { APIResponse, Equipo } from "@/types";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,11 +8,19 @@ export const metadata: Metadata = {
   description: 'Visualiza todos los equipos registrados en la aplicación.',
 };
 
-export default function ListadoEquiposPage() {
+export default async function ListadoEquiposPage() {
+  const listadoEquipos = await listarEquipos() as APIResponse<Equipo>;
+  const equipos: Equipo[] = listadoEquipos.data as any as Equipo[];
+
   return (
-    <div>
-      <h1>Hello Page</h1>
-      <Controls>
+    <div className="relative">
+      <h1 className="text-2xl font-extrabold mb-4">
+        Equipos registrados
+      </h1>
+
+      <ListadoEquipos equipos={equipos} />
+
+      <Controls returnLink='/'>
         <AddItemButton path="/equipos/crear" />
       </Controls>
     </div>
