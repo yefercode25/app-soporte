@@ -7,7 +7,7 @@ interface Props {
 
 export const ListadoEquipos = ({ equipos }: Props) => {
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {equipos.map((equipo, index) => (
         <EquipoItem
           key={index}

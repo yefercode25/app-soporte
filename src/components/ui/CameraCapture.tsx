@@ -162,7 +162,6 @@ export const CameraCapture = ({ setUploadingImage }: Props) => {
             image={imageSrc}
             crop={crop}
             zoom={zoom}
-            aspect={16 / 9}
             onCropChange={(crop) => setCrop(crop)}
             onCropComplete={(_, croppedAreaPixels) => setCroppedAreaPixels(croppedAreaPixels)}
             onZoomChange={setZoom}
