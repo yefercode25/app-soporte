@@ -142,8 +142,8 @@ export const CameraCapture = ({ setUploadingImage }: Props) => {
                 ref={webcamRef}
                 screenshotFormat="image/png"
                 className="rounded-md aspect-video"
-                height={562.5}
-                width={1000}
+                height={'auto'}
+                width={'100%'}
               />
               <button
                 type="button"
@@ -170,6 +170,12 @@ export const CameraCapture = ({ setUploadingImage }: Props) => {
                 width: '100%',
                 height: 300,
                 position: 'relative',
+                objectFit: 'cover',
+              },
+              mediaStyle: {
+                width: 'auto',
+                height: 'auto',
+                objectFit: 'cover',
               },
             }}
             rotation={rotation}
