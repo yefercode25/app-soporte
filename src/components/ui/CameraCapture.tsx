@@ -170,14 +170,15 @@ export const CameraCapture = ({ setUploadingImage }: Props) => {
             style={{
               containerStyle: {
                 width: '100%',
-                height: 300,
+                height: '400px',
                 position: 'relative',
-                objectFit: 'cover',
+                objectFit: 'contain',
+                aspectRatio: 16 / 9,
               },
               mediaStyle: {
                 width: 'auto',
                 height: 'auto',
-                objectFit: 'cover',
+                objectFit: 'contain',
               },
             }}
             rotation={rotation}
