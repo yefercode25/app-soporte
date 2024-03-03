@@ -13,6 +13,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { CgSmartphoneRam } from 'react-icons/cg';
 import { MdOutlineSdStorage } from 'react-icons/md';
 import { FaComputer, FaRegKeyboard } from 'react-icons/fa6';
+import { UploadApiResponse } from 'cloudinary';
+import { insertarImagen } from '@/actions/imagenes';
+import { insertarEquipo } from '@/actions/equipos';
 
 export const RegistrarEquipoForm = () => {
   const session = useSession();
@@ -20,6 +23,7 @@ export const RegistrarEquipoForm = () => {
 
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
   const [listEnployees, setListEmployees] = useState<{ value: string, label: string }[]>([{ label: '', value: 'Sin opciones disponibles' }]);
+  const [uploadingImage, setUploadingImage] = useState<UploadApiResponse | null>(null);
 
   const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<CrearComputador>({
     resolver: yupResolver(crearEquipoSchema) as any,
@@ -34,8 +38,37 @@ export const RegistrarEquipoForm = () => {
     });
 
     try {
-      
+      let insertImage = null;
+      if (uploadingImage) {
+        insertImage = await insertarImagen(uploadingImage as UploadApiResponse);
+        if (insertImage.statusCode !== 201) {
+          return toaster({
+            tipo: 'error',
+            title: 'Error registro imagen',
+            description: 'No se ha podido registrar la imagen del equipo, intentalo nuevamente.'
+          });
+        }
+        data.imageId = insertImage.data?.id;
+      }
+
+      const insertarComputador = await insertarEquipo(data);
+      if (insertarComputador.statusCode === 201) {
+        toaster({
+          tipo: 'success',
+          title: 'Registro exitoso',
+          description: 'El nuevo equipo se ha registrado correctamente.'
+        });
+        reset();
+        return router.push('/equipos');
+      }
+
+      return toaster({
+        tipo: 'error',
+        title: 'Error registro',
+        description: 'No se ha podido registrar el nuevo equipo, intentalo nuevamente.'
+      });
     } catch (_error: any) {
+      console.error(_error);
       return toaster({
         tipo: 'error',
         title: 'Error registro',
@@ -152,7 +185,9 @@ export const RegistrarEquipoForm = () => {
         ]}
       />
       <div className="mb-3">
-        <CameraCapture />
+        <CameraCapture 
+          setUploadingImage={setUploadingImage}
+        />
       </div>
       <div className="mb-3">
         <button type='submit' disabled={isSendingData} className="mb-2 block w-full text-center text-white bg-blue-600 hover:bg-blue-700 px-2 py-1.5 rounded-md">Registrar actividad</button>

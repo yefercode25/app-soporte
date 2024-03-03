@@ -21,10 +21,8 @@ export const crearEquipoSchema = yup.object().shape({
     .typeError('El almacenamiento debe ser un número entero.'),
   os: yup.string()
     .required('El sistema operativo es requerido.'),
-  peripherals: yup.array() 
-    .of(yup.string())
-    .required('Los periféricos son requeridos.')
-    .typeError('Los periféricos deben ser una lista de strings separados por comas.'),
+  peripherals: yup.string()
+    .required('Los periféricos son requeridos.'),
   type: yup.string()
     .required('El tipo es requerido.')
     .oneOf(['laptop', 'desktop', 'server'], 'El tipo debe ser laptop, desktop o server.'),
