@@ -243,7 +243,7 @@ export const CameraCapture = ({ setUploadingImage }: Props) => {
 
       {isUploaded && (
         <div className="mt-4">
-          <Image className='rounded-md' src={imageSrc || ''} alt="Imagen recortada" width={1000} height={562.5} />
+          <Image className='rounded-md' src={croppedImage || ''} alt="Imagen recortada" width={1000} height={562.5} />
           <p className="px-2 py-1 bg-green-600 text-white mt-2 rounded-md text-center">Imagen cargada a Cloudinary</p>
           <button
             type="button"
