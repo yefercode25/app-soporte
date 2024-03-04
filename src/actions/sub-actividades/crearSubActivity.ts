@@ -33,6 +33,7 @@ export const crearSubActivity = async (data: IGestionarSubTarea) => {
     }
   } catch (error) {
     return {
+      data: null,
       message: 'Se ha producido un error al crear la sub actividad, intente nuevamente.',
       statusCode: 500,
       statusText: 'INTERNAL_SERVER_ERROR'
