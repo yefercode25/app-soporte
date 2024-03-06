@@ -34,3 +34,32 @@ export const uploadImageToCloudinary = async (image: string, folder: folderCloud
     }
   }
 };
+
+export const deleteImageFromCloudinary = async (id: string) => {
+  try {
+    const response = await v2Cloudinary.uploader.destroy(id);
+
+    if (response.result === 'ok') {
+      return {
+        data: null,
+        message: 'La imagen se ha eliminado correctamente de Cloudinary.',
+        statusCode: 200,
+        statusText: 'OK'
+      }
+    }
+
+    return {
+      data: null,
+      message: 'Se ha producido un error al eliminar la imagen de Cloudinary.',
+      statusCode: 500,
+      statusText: 'INTERNAL_SERVER_ERROR'
+    }
+  } catch (error) {
+    return {
+      data: null,
+      message: 'Se ha producido un error al eliminar la imagen de Cloudinary.',
+      statusCode: 500,
+      statusText: 'INTERNAL_SERVER_ERROR'
+    }
+  }
+};

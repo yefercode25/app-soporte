@@ -21,7 +21,6 @@ export const insertarImagen = async (image: UploadApiResponse) => {
       statusText: 'CREATED'
     }
   } catch (error) {
-    console.log("🚀 ~ insertarImagen ~ error:", error)
     return {
       data: null,
       message: 'Se ha producido un error al registrar la imagen en la base de datos.',

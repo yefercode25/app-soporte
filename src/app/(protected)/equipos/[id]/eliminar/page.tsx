@@ -13,7 +13,10 @@ export default async function EliminarEquipoPage({ params }: PageProps) {
         <p className="mt-2 text-red-500 font-medium">Si eliminas el equipo, se perderá toda la información relacionada con él.</p>
         <h3 className="mt-4">¿Estás seguro de que deseas eliminar el equipo <span className="font-bold">{`${computer.brand} - ${computer.model}`}</span>?</h3>
 
-        <EliminarEquipoForm id={id} />
+        <EliminarEquipoForm 
+          id={id} 
+          imageId={computer.imageRel?.id || ''}
+        />
       </div>
       <Controls returnLink={`/actividades/${id}`} />
     </div>

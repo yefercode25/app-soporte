@@ -1,9 +1,18 @@
 'use server';
 
 import prisma from "@/lib/prisma";
+import { deleteImageFromCloudinary, eliminarImagen, obtenerImagen } from "..";
 
-export const eliminarEquipo = async (id: string) => {
+export const eliminarEquipo = async (id: string, imageId: string) => {
   try {
+    const findImage = await obtenerImagen(imageId);
+    if(findImage.statusCode === 200) {
+      const { statusCode } = await deleteImageFromCloudinary(findImage.data?.cloudinaryId as string);
+      if(statusCode !== 200) {
+        await eliminarImagen(imageId);
+      }
+    }
+
     const findComputer = await prisma.computer.findUnique({ where: { id } });
     if (!findComputer) {
       return {

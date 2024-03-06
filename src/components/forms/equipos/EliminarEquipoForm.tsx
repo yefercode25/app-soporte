@@ -7,9 +7,10 @@ import { useState } from "react";
 
 interface Props {
   id: string;
+  imageId: string;
 }
 
-export const EliminarEquipoForm = ({ id }: Props) => {
+export const EliminarEquipoForm = ({ id, imageId }: Props) => {
   const router = useRouter();
 
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
@@ -23,7 +24,7 @@ export const EliminarEquipoForm = ({ id }: Props) => {
         description: 'Se está intentando eliminar el equipo'
       });
 
-      const deleteActivity = await eliminarEquipo(id);
+      const deleteActivity = await eliminarEquipo(id, imageId);
       if (deleteActivity.statusCode === 200) {
         toaster({
           title: "Equipo eliminado",
