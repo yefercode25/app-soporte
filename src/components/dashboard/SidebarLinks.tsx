@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IoHomeOutline, IoDocumentTextOutline, IoExitOutline, IoConstructOutline, IoApps, IoTicketOutline, IoPersonAddOutline, IoDesktopOutline, IoGlobeOutline } from "react-icons/io5"
+import { IoHomeOutline, IoDocumentTextOutline, IoExitOutline, IoConstructOutline, IoTicketOutline, IoPersonAddOutline, IoDesktopOutline, IoGlobeOutline, IoPrintOutline } from "react-icons/io5"
 import { SidebarLink } from ".";
 
 const generalMenuItems = [
@@ -7,6 +7,7 @@ const generalMenuItems = [
   { titulo: 'Actividades', icono: <IoTicketOutline />, ruta: '/actividades' },
   { titulo: 'Funcionarios', icono: <IoPersonAddOutline />, ruta: '/funcionarios' },
   { titulo: 'Equipos', icono: <IoDesktopOutline />, ruta: '/equipos' },
+  { titulo: 'Impresoras', icono: <IoPrintOutline />, ruta: '/impresoras' },
   { titulo: 'Red', icono: <IoGlobeOutline />, ruta: '/red' },
 ]
 
