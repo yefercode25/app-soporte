@@ -2,7 +2,7 @@
 
 import { fechaFormateada, horaFormateada } from "@/utils/dates";
 import { GrupoActividad } from "@/types";
-import { IoBusinessOutline, IoCreateOutline, IoEyeOutline, IoPersonOutline, IoRefreshOutline, IoTrashOutline } from "react-icons/io5";
+import { IoCreateOutline, IoEyeOutline, IoPersonOutline, IoRefreshOutline, IoTrashOutline } from "react-icons/io5";
 import Link from "next/link";
 
 interface ActivitiesListProps {
