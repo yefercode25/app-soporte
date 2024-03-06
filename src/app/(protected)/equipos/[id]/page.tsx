@@ -103,7 +103,7 @@ export default async function InformacionEquipoPage({ params }: PageProps) {
           <p className="flex items-center gap-2 font-extrabold">
             <IoAlbumsOutline />
             <span> Estado: </span>
-            <span className={`font-normal text-sm ${computer.status === 'inactivo' ? 'bg-red-600' : 'bg-green-600'} text-white px-3 py-1 rounded-full`}>{computer.status}</span>
+            <span className={`capitalize font-normal text-sm ${computer.status === 'inactivo' ? 'bg-red-600' : 'bg-green-600'} text-white px-3 py-1 rounded-full`}>{computer.status}</span>
           </p>
         </div>
       </div>
