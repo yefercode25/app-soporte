@@ -1,45 +1,69 @@
 'use client';
 
-import { crearEquipoSchema } from '@/lib/yup-schemas';
-import { CrearComputador } from '@/types';
+import { editarEquipoSchema } from '@/lib/yup-schemas';
+import { EditarComputador, Equipo } from '@/types';
 import { CameraCapture, Input } from '@/components';
 import { IoAlbumsOutline, IoBagRemoveOutline, IoHardwareChipOutline, IoLaptopOutline, IoLogoWindows, IoSparklesOutline } from 'react-icons/io5';
 import { toaster } from '@/utils/toast';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CgSmartphoneRam } from 'react-icons/cg';
 import { MdOutlineSdStorage } from 'react-icons/md';
 import { FaComputer, FaRegKeyboard } from 'react-icons/fa6';
 import { UploadApiResponse } from 'cloudinary';
-import { insertarImagen } from '@/actions/imagenes';
-import { insertarEquipo } from '@/actions/equipos';
+import { actualizarEquipo } from '@/actions/equipos';
+import Image from 'next/image';
+import { deleteImageFromCloudinary, eliminarImagen, insertarImagen } from '@/actions';
 
-export const RegistrarEquipoForm = () => {
-  const session = useSession();
+interface Props {
+  equipo: Equipo;
+}
+
+export const EditarEquipoForm = ({ equipo }: Props) => {
   const router = useRouter();
 
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
-  const [listEnployees, setListEmployees] = useState<{ value: string, label: string }[]>([{ label: '', value: 'Sin opciones disponibles' }]);
   const [uploadingImage, setUploadingImage] = useState<UploadApiResponse | null>(null);
 
-  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<CrearComputador>({
-    resolver: yupResolver(crearEquipoSchema) as any,
+  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<EditarComputador>({
+    resolver: yupResolver(editarEquipoSchema) as any,
   });
 
-  const onSubmit = async (data: CrearComputador) => {
+  useEffect(() => {
+    setValue('id', equipo.id);
+    setValue('brand', equipo.brand);
+    setValue('model', equipo.model);
+    setValue('serial', equipo.serial);
+    setValue('processor', equipo.processor);
+    setValue('ram', equipo.ram);
+    setValue('storage', equipo.storage);
+    setValue('os', equipo.os);
+    setValue('peripherals', equipo.peripherals.join(', ') || '');
+    setValue('type', equipo.type as any);
+    setValue('status', equipo.status as any);
+  }, [equipo, setValue]);
+
+  const onSubmit = async (data: EditarComputador) => {
     setIsSendingData(true);
     toaster({
       tipo: 'loading',
-      title: 'Registrando equipo',
-      description: 'Se está intentando registrar el equipo, por favor espera un momento.'
+      title: 'Actualizando equipo',
+      description: 'Se está intentando actualizar el equipo, por favor espera un momento.'
     });
 
     try {
       let insertImage = null;
       if (uploadingImage) {
+        // Intentar eliminar la imagen actual del equipo
+        if (equipo.imageRel?.id) {
+          const deleteFromCloudinary = await deleteImageFromCloudinary(equipo.imageRel?.cloudinaryId || '');
+          if (deleteFromCloudinary.statusCode !== 200) {
+            await eliminarImagen(equipo.imageRel?.id as string);
+          }
+        }
+
         insertImage = await insertarImagen(uploadingImage as UploadApiResponse);
         if (insertImage.statusCode !== 201) {
           return toaster({
@@ -51,12 +75,12 @@ export const RegistrarEquipoForm = () => {
         data.imageId = insertImage.data?.id;
       }
 
-      const insertarComputador = await insertarEquipo(data);
-      if (insertarComputador.statusCode === 201) {
+      const updateEquipo = await actualizarEquipo(data);
+      if (updateEquipo.statusCode === 200) {
         toaster({
           tipo: 'success',
-          title: 'Registro exitoso',
-          description: 'El nuevo equipo se ha registrado correctamente.'
+          title: 'Equipo actualizado',
+          description: 'El equipo se ha actualizado correctamente.'
         });
         reset();
         return router.push('/equipos');
@@ -64,15 +88,14 @@ export const RegistrarEquipoForm = () => {
 
       return toaster({
         tipo: 'error',
-        title: 'Error registro',
+        title: 'Error actualización',
         description: 'No se ha podido registrar el nuevo equipo, intentalo nuevamente.'
       });
     } catch (_error: any) {
-      console.error(_error);
       return toaster({
         tipo: 'error',
-        title: 'Error registro',
-        description: 'No se ha podido registrar el nuevo equipo, intentalo nuevamente.'
+        title: 'Error actualización',
+        description: 'Se ha producido un error al intentar actualizar el equipo, intentalo nuevamente.'
       });
     } finally {
       setIsSendingData(false);
@@ -184,13 +207,34 @@ export const RegistrarEquipoForm = () => {
           { value: 'en reparación', label: 'En reparación' }
         ]}
       />
+      <div className='mb-3'>
+        <span className='block text-sm font-semibold mb-1'>Imagen del equipo</span>
+        <div className='flex items-center gap-2'>
+          {equipo.imageRel?.id ? (
+            <div>
+              <span className='text-xs text-gray-500 mb-2 block'>Esta es la imágen cargada actualmente.</span>
+              <Image
+                src={equipo.imageRel.secureUrl ?? '/img/placeholder.png'}
+                alt={`Imagen de ${equipo.brand} ${equipo.model}`}
+                width={400}
+                height={200}
+                className='rounded-md'
+              />
+            </div>
+          ) : (
+            <span className='text-xs text-gray-500'>Si lo deseas, puedes subir una imagen del equipo.</span>
+          )}
+        </div>
+      </div>
       <div className="mb-3">
-        <CameraCapture 
+        <CameraCapture
           setUploadingImage={setUploadingImage}
         />
       </div>
       <div className="mb-3">
-        <button type='submit' disabled={isSendingData} className="mb-2 block w-full text-center text-white bg-blue-600 hover:bg-blue-700 px-2 py-1.5 rounded-md">Registrar equipo</button>
+        <button type='submit' disabled={isSendingData} className="mb-2 block w-full text-center text-white bg-blue-600 hover:bg-blue-700 px-2 py-1.5 rounded-md">
+          {isSendingData ? 'Actualizando equipo...' : 'Actualizar equipo'}
+        </button>
       </div>
     </form>
   )

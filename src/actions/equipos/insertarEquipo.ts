@@ -9,6 +9,16 @@ export const insertarEquipo = async (data: CrearComputador) => {
 
     const listPeripherals = peripherals.split(',');
 
+    const findEquipo = await prisma.computer.findFirst({ where: { serial } });
+    if (findEquipo) {
+      return {
+        data: null,
+        message: 'El serial del equipo ya se encuentra registrado, verifica e intenta nuevamente.',
+        statusCode: 400,
+        statusText: 'BAD_REQUEST'
+      }
+    }
+
     const equipo = await prisma.computer.create({
       data: {
         brand,

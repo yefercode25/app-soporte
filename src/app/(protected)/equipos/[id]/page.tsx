@@ -89,7 +89,7 @@ export default async function InformacionEquipoPage({ params }: PageProps) {
               {(computer.peripherals?.length ?? 0) > 0 && (
                 <div className="flex items-center flex-wrap gap-2">
                   {computer.peripherals?.map((peripheral, index) => (
-                    <span key={index} className="inline-block font-normal px-2 py-[3px] bg-blue-600 text-sm rounded-full">{peripheral}</span>
+                    <span key={index} className="capitalize inline-block font-normal px-2 py-[3px] bg-blue-600 text-sm rounded-full">{peripheral}</span>
                   ))}
                 </div>
               )}

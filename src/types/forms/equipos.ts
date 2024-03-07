@@ -11,3 +11,7 @@ export interface CrearComputador {
   status: 'activo' | 'inactivo' | 'en reparación';
   imageId?: string;
 }
+
+export interface EditarComputador extends CrearComputador {
+  id: string;
+}

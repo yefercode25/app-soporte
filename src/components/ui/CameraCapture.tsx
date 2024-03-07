@@ -87,7 +87,6 @@ export const CameraCapture = ({ setUploadingImage }: Props) => {
         title: 'Imagen guardada',
         description: 'La imagen se ha guardado correctamente en Cloudinary.'
       });
-      setCroppedImage(null);
       setIsUploaded(true);
       if (setUploadingImage) {
         setUploadingImage(uploadResponse.data as UploadApiResponse);

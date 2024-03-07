@@ -1,4 +1,4 @@
-import { Controls, RegistrarEquipoForm } from "@/components";
+import { Controls, EditarEquipoForm } from "@/components";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ export default function CrearEquipoPage() {
         <span className="text-sm mb-4 inline-block">
           Aquí podrás registrar un nuevo equipo para llevar un control y seguimiento de los mismos.
         </span>
-        <RegistrarEquipoForm />
+        <EditarEquipoForm />
       </div>
       <Controls returnLink={`/equipos`} />
     </div>

@@ -1,3 +1,4 @@
+export * from './actualizarEquipo';
 export * from './eliminarEquipo';
 export * from './insertarEquipo';
 export * from './listarEquipos';
