@@ -1,10 +1,10 @@
 'use client';
 
-import { editarActividad, listarFuncionarios } from '@/actions';
+import { editarActividad, listadoEquiposSelect, listadoFuncionariosSelect, listarFuncionarios } from '@/actions';
 import { editarActividadSchema } from '@/lib/yup-schemas';
 import { Actividad, EditarActividad } from '@/types';
 import { Input } from '@/components';
-import { IoAlbumsOutline, IoCalendarClearOutline, IoTicketOutline, IoTimerOutline } from 'react-icons/io5';
+import { IoAlbumsOutline, IoCalendarClearOutline, IoDesktopOutline, IoTicketOutline, IoTimerOutline } from 'react-icons/io5';
 import { toaster } from '@/utils/toast';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -18,13 +18,14 @@ interface Props {
 }
 
 export const EditarActividadForm = ({ actividad }: Props) => {
-  const { id, title, observation, createdAt, posponedAt, priority, userId, employeeId } = actividad;
+  const { id, title, observation, createdAt, posponedAt, priority, userId, employeeId, computerId } = actividad;
 
   const session = useSession();
   const router = useRouter();
 
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
   const [listEnployees, setListEmployees] = useState<{ value: string, label: string }[]>([{ label: '', value: 'Sin opciones disponibles' }]);
+  const [listComputers, setListComputers] = useState<{ value: string, label: string }[]>([{ label: '', value: 'Sin opciones disponibles' }]);
 
   const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<EditarActividad>({
     resolver: yupResolver(editarActividadSchema)
@@ -32,22 +33,17 @@ export const EditarActividadForm = ({ actividad }: Props) => {
 
   useEffect(() => {
     const getListaEmpleados = async () => {
-      const listado = await listarFuncionarios();
-      if (listado.statusCode !== 200) {
-        toaster({
-          tipo: 'error',
-          title: 'Error al listar',
-          description: 'No se puede obtener el listado de funcionarios'
-        });
-      }
+      const listadoFuncionarios = await listadoFuncionariosSelect();
+      const listadoEquipos = await listadoEquiposSelect();
 
-      const selectData = (listado).data?.map((func: any) => ({ label: func?.fullName, value: func?.id }));
-      setListEmployees(selectData);
+      setListEmployees(listadoFuncionarios.data || []);
+      setListComputers(listadoEquipos.data || []);
       setValue('employeeId', employeeId ?? '');
+      setValue('computerId', computerId ?? '');
     };
 
     getListaEmpleados();
-  }, [session, setValue, employeeId]);
+  }, [session, setValue, employeeId, computerId]);
 
   useEffect(() => {
     setValue('id', id);
@@ -153,6 +149,16 @@ export const EditarActividadForm = ({ actividad }: Props) => {
         errors={errors}
         placeholder="Seleccione un funcionario"
         selectOptions={listEnployees}
+      />
+      <Input
+        title="Equipo relacionado (opcional)"
+        type="select"
+        id="priority"
+        icon={<IoDesktopOutline />}
+        {...register('computerId')}
+        errors={errors}
+        placeholder="Seleccione el equipo asociado a la actividad"
+        selectOptions={listComputers}
       />
       <Input
         title="La tarea se pospone hasta (opcional)"

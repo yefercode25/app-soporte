@@ -28,6 +28,8 @@ model Activity {
   user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   employee    Employee?     @relation(fields: [employeeId], references: [id])
   images      Image?        @relation(fields: [imagesId], references: [id])
+  printer     Printer?      @relation(fields: [printerId], references: [id])
+  computer    Computer?     @relation(fields: [computerId], references: [id])
   SubActivity SubActivity[]
 }
 
@@ -67,6 +69,7 @@ model Computer {
 
   imageRel         Image?             @relation(fields: [imageId], references: [id])
   AssignedComputer AssignedComputer[]
+  Activity         Activity[]
 }
 
 model Printer {
@@ -79,7 +82,8 @@ model Printer {
   status     String  @default("activo") // activo, inactivo, en reparación
   imageId    String?
 
-  imageRel Image? @relation(fields: [imageId], references: [id])
+  imageRel Image?     @relation(fields: [imageId], references: [id])
+  Activity Activity[]
 }
 
 model AssignedComputer {

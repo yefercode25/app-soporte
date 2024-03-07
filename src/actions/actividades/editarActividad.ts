@@ -5,7 +5,7 @@ import { EditarActividad } from "@/types";
 import { convertToISO } from "@/utils/dates";
 
 export const editarActividad = async (actividad: EditarActividad) => {
-  const { id, createdAt, employeeId, priority, title, userId, observation, posponedAt } = actividad;
+  const { id, createdAt, employeeId, priority, title, userId, observation, posponedAt, computerId } = actividad;
 
   try {
     const isoDate = convertToISO(createdAt);
@@ -18,7 +18,8 @@ export const editarActividad = async (actividad: EditarActividad) => {
         title,
         userId,
         observation,
-        posponedAt: posponedAt ? convertToISO(posponedAt) : null
+        posponedAt: posponedAt ? convertToISO(posponedAt) : null,
+        computerId: computerId || null
       }
     });
 

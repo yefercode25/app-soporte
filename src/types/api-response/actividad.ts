@@ -12,6 +12,7 @@ export interface Actividad {
   userId: string;
   employeeId: string;
   employee: Funcionario;
+  computerId?: string;
 }
 
 export type ActivityPriority = 'baja' | 'normal' | 'alta';

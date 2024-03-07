@@ -1,10 +1,10 @@
 'use client';
 
-import { crearActividad, listarFuncionarios } from '@/actions';
+import { crearActividad, listadoEquiposSelect, listadoFuncionariosSelect, listarFuncionarios } from '@/actions';
 import { crearActividadSchema } from '@/lib/yup-schemas';
 import { GestionarActividad } from '@/types';
 import { Input } from '@/components';
-import { IoAlbumsOutline, IoCalendarClearOutline, IoTicketOutline, IoTimerOutline } from 'react-icons/io5';
+import { IoAlbumsOutline, IoCalendarClearOutline, IoDesktopOutline, IoTicketOutline, IoTimerOutline } from 'react-icons/io5';
 import { toaster } from '@/utils/toast';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -18,6 +18,7 @@ export const RegistrarActividadForm = () => {
 
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
   const [listEnployees, setListEmployees] = useState<{ value: string, label: string }[]>([{ label: '', value: 'Sin opciones disponibles' }]);
+  const [listComputers, setListComputers] = useState<{ value: string, label: string }[]>([{ label: '', value: 'Sin opciones disponibles' }]);
 
   const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<GestionarActividad>({
     resolver: yupResolver(crearActividadSchema)
@@ -27,17 +28,11 @@ export const RegistrarActividadForm = () => {
     setValue('userId', session?.data?.user?.id || '');
 
     const getListaEmpleados = async () => {
-      const listado = await listarFuncionarios();
-      if (listado.statusCode !== 200) {
-        toaster({
-          tipo: 'error',
-          title: 'Error al listar',
-          description: 'No se puede obtener el listado de funcionarios'
-        });
-      }
+      const listadoFuncionarios = await listadoFuncionariosSelect();
+      const listadoEquipos = await listadoEquiposSelect();
 
-      const selectData = (listado).data?.map((func: any) => ({ label: func?.fullName, value: func?.id }));
-      setListEmployees(selectData);
+      setListEmployees(listadoFuncionarios.data || []);
+      setListComputers(listadoEquipos.data || []);
     };
 
     getListaEmpleados();
@@ -137,6 +132,16 @@ export const RegistrarActividadForm = () => {
         errors={errors}
         placeholder="Seleccione un funcionario"
         selectOptions={listEnployees}
+      />
+      <Input
+        title="Equipo relacionado (opcional)"
+        type="select"
+        id="priority"
+        icon={<IoDesktopOutline />}
+        {...register('computerId')}
+        errors={errors}
+        placeholder="Seleccione el equipo asociado a la actividad"
+        selectOptions={listComputers}
       />
       <Input
         title="La tarea se pospone hasta (opcional)"

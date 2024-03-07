@@ -8,6 +8,8 @@ export interface GestionarActividad {
   priority: 'baja' | 'normal' | 'alta';
   userId: string;
   employeeId: string;
+  computerId?: string;
+  printerId?: string;
 }
 
 export interface ActualizarEstadoActividad {

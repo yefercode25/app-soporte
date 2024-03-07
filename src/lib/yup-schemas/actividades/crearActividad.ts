@@ -16,5 +16,7 @@ export const crearActividadSchema = yup.object().shape({
   userId: yup.string()
     .required('El usuario al que crear la actividad es requerido.'),
   employeeId: yup.string()
-    .required('Se debe seleccionar el funcionario solicitante.')
+    .required('Se debe seleccionar el funcionario solicitante.'),
+  computerId: yup.string().optional(),
+  printerId: yup.string().optional(),
 });
