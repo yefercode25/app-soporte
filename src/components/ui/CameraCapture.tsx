@@ -15,9 +15,10 @@ import type { UploadApiResponse } from 'cloudinary';
 
 interface Props { 
   setUploadingImage?: (value: UploadApiResponse) => void;
+  uploadFolder?: 'soporte-app/equipos' | 'soporte-app/impresoras' | 'soporte-app/actividades';
 }
 
-export const CameraCapture = ({ setUploadingImage }: Props) => {
+export const CameraCapture = ({ setUploadingImage, uploadFolder = 'soporte-app/equipos' }: Props) => {
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | undefined>(undefined);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -80,7 +81,7 @@ export const CameraCapture = ({ setUploadingImage }: Props) => {
       });
     }
 
-    const uploadResponse = await uploadImageToCloudinary(croppedImage, 'soporte-app/equipos');
+    const uploadResponse = await uploadImageToCloudinary(croppedImage, uploadFolder);
     if (uploadResponse.statusCode === 200) {
       toaster({
         tipo: 'success',
