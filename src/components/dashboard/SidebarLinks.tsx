@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { IoHomeOutline, IoDocumentTextOutline, IoExitOutline, IoConstructOutline, IoTicketOutline, IoPersonAddOutline, IoDesktopOutline, IoGlobeOutline, IoPrintOutline } from "react-icons/io5"
 import { SidebarLink } from ".";
+import { MdOutlinePersonPin } from "react-icons/md";
 
 const generalMenuItems = [
   { titulo: 'Inicio', icono: <IoHomeOutline />, ruta: '/' },
   { titulo: 'Actividades', icono: <IoTicketOutline />, ruta: '/actividades' },
   { titulo: 'Funcionarios', icono: <IoPersonAddOutline />, ruta: '/funcionarios' },
+  { titulo: 'Asignaciones', icono: <MdOutlinePersonPin />, ruta: '/asignaciones' },
   { titulo: 'Equipos', icono: <IoDesktopOutline />, ruta: '/equipos' },
   { titulo: 'Impresoras', icono: <IoPrintOutline />, ruta: '/impresoras' },
   { titulo: 'Red', icono: <IoGlobeOutline />, ruta: '/red' },

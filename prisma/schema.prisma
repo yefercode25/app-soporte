@@ -82,8 +82,9 @@ model Printer {
   status     String  @default("activo") // activo, inactivo, en reparación
   imageId    String?
 
-  imageRel Image?     @relation(fields: [imageId], references: [id])
-  Activity Activity[]
+  imageRel         Image?             @relation(fields: [imageId], references: [id])
+  Activity         Activity[]
+  AssignedComputer AssignedComputer[]
 }
 
 model AssignedComputer {
@@ -95,9 +96,11 @@ model AssignedComputer {
   anydeskCode  String
   userId       String
   computerId   String
+  printerId    String?
 
   userCuid User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   computer Computer? @relation(fields: [computerId], references: [id])
+  printer  Printer?  @relation(fields: [printerId], references: [id])
 }
 
 model Image {
