@@ -7,3 +7,7 @@ export interface CrearImpresora {
   status: 'activo' | 'inactivo' | 'en reparación';
   imageId?: string;
 }
+
+export interface EditarImpresora extends CrearImpresora {
+  id: string;
+}

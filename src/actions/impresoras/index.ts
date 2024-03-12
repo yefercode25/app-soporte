@@ -1,3 +1,4 @@
+export * from './actualizarImpresora';
 export * from './crearImpresora';
 export * from './eliminarImpresora';
 export * from './listarImpresoras';
