@@ -37,13 +37,13 @@ export const ImpresoraItem = ({ impresora }: Props) => {
               </div>
             </div>
             <div className="text-xs flex items-center flex-wrap gap-2">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 capitalize">
                 <IoIosWater />
                 <p>{inkDetails}</p>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 capitalize">
                 <IoPrintOutline />
-                <p>{type} GB</p>
+                <p>{type}</p>
               </div>
             </div>
           </div>

@@ -34,24 +34,24 @@ export const EquipoItem = ({ equipo }: Props) => {
                 <span className={`text-xs capitalize px-2 py-[3px] text-white rounded-full ${status !== 'activo' ? 'bg-red-600' : 'bg-green-600'}`}>{status}</span>
               </h2>
               <div className="flex items-center gap-2">
-                <p className="text-white px-2 py-[3px] bg-blue-600 rounded-full text-xs font-semibold">{brand}</p>
-                <p className="text-white px-2 py-[3px] bg-blue-600 rounded-full text-xs font-semibold">{serial}</p>
+                <p className="text-white px-2 py-[3px] bg-blue-600 rounded-full text-xs font-semibold capitalize">{brand}</p>
+                <p className="text-white px-2 py-[3px] bg-blue-600 rounded-full text-xs font-semibold capitalize">{serial}</p>
               </div>
             </div>
             <div className="text-xs flex items-center flex-wrap gap-2">
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 capitalize">
                 <IoHardwareChipOutline />
                 <p>{processor}</p>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 capitalize">
                 <CgSmartphoneRam />
                 <p>{ram} GB</p>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 capitalize">
                 <MdOutlineSdStorage />
                 <p>{storage} GB</p>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 capitalize">
                 <IoLogoWindows />
                 <p>{os}</p>
               </div>
