@@ -13,7 +13,7 @@ export const listadoEquiposSelect = async () => {
       },
     });
 
-    const selectData = equipos.map((equipo: any) => ({ label: `${equipo?.brand} ${equipo?.model} - ${equipo?.serial}`, value: equipo?.id }));
+    const selectData = equipos.map((equipo: any) => ({ label: `${equipo?.brand} ${equipo?.model} (${equipo?.serial})`, value: equipo?.id }));
 
     return {
       data: selectData,

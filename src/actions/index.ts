@@ -1,4 +1,5 @@
 export * from './actividades';
+export * from './asignaciones';
 export * from './cloudinary';
 export * from './equipos';
 export * from './funcionarios';

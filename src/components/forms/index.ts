@@ -1,4 +1,5 @@
 export * from './actividades';
+export * from './asignaciones';
 export * from './auth';
 export * from './equipos';
 export * from './fields';

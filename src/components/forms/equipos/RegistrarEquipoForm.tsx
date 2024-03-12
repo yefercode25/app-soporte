@@ -8,7 +8,6 @@ import { toaster } from '@/utils/toast';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CgSmartphoneRam } from 'react-icons/cg';
 import { MdOutlineSdStorage } from 'react-icons/md';
@@ -18,7 +17,6 @@ import { insertarImagen } from '@/actions/imagenes';
 import { insertarEquipo } from '@/actions/equipos';
 
 export const RegistrarEquipoForm = () => {
-  const session = useSession();
   const router = useRouter();
 
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
