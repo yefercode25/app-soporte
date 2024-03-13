@@ -1,76 +1,58 @@
-import { Equipo } from "@/types";
-import Image from "next/image";
+import { AsignacionComputador } from "@/types";
 import Link from "next/link";
-import { CgSmartphoneRam } from "react-icons/cg";
-import { IoEyeOutline, IoCreateOutline, IoRefreshOutline, IoTrashOutline, IoHardwareChipOutline, IoLogoWindows } from "react-icons/io5";
-import { MdOutlineSdStorage } from "react-icons/md";
+import { IoCreateOutline, IoDesktopOutline, IoEyeOutline, IoLocationOutline, IoPrintOutline, IoTrashOutline } from "react-icons/io5";
+import { SiAnydesk } from "react-icons/si";
 
 interface Props {
-  equipo: Equipo;
+  asignacion: AsignacionComputador;
 }
 
-export const EquipoItem = ({ equipo }: Props) => {
-  const { brand, id, imageRel, model, os, processor, ram, serial, status, storage } = equipo;
+export const AsignacionItem = ({ asignacion }: Props) => {
+  const { computer, id, location, printer, status, userCuid } = asignacion;
 
   return (
     <div className="px-3 py-4 bg-white text-gray-800 rounded-md overflow-hidden">
       <div className="flex items-center gap-2">
-        <div className="aspect-video w-[100px] h-[60px]">
-          <Image
-            src={imageRel?.secureUrl || '/img/placeholder.png'}
-            alt={`Imagen de ${brand} ${model}`}
-            width={300}
-            height={210}
-            loading="lazy"
-            className="rounded-md"
-          />
-        </div>
         <div className="block w-full md:flex md:items-center md:justify-between">
           <div>
             <div className="flex flex-col-reverse gap-2">
               <h2 className="font-bold text-xl flex items-center gap-2">
-                {model}
-                <span className={`text-xs capitalize px-2 py-[3px] text-white rounded-full ${status !== 'activo' ? 'bg-red-600' : 'bg-green-600'}`}>{status}</span>
+                {userCuid.fullName}
               </h2>
               <div className="flex items-center gap-2">
-                <p className="text-white px-2 py-[3px] bg-blue-600 rounded-full text-xs font-semibold capitalize">{brand}</p>
-                <p className="text-white px-2 py-[3px] bg-blue-600 rounded-full text-xs font-semibold capitalize">{serial}</p>
+                <p className={`text-xs capitalize px-2 py-[3px] text-white rounded-full ${status === 'vigente' ? 'bg-green-600' : 'bg-red-600'}`}>{status}</p>
               </div>
             </div>
             <div className="text-xs flex items-center flex-wrap gap-2">
               <div className="flex items-center gap-1 capitalize">
-                <IoHardwareChipOutline />
-                <p>{processor}</p>
+                <IoLocationOutline />
+                <p>{location}</p>
               </div>
               <div className="flex items-center gap-1 capitalize">
-                <CgSmartphoneRam />
-                <p>{ram} GB</p>
+                <IoDesktopOutline />
+                <p>{`${computer.brand} ${computer.model} (${computer.serial})`}</p>
               </div>
               <div className="flex items-center gap-1 capitalize">
-                <MdOutlineSdStorage />
-                <p>{storage} GB</p>
-              </div>
-              <div className="flex items-center gap-1 capitalize">
-                <IoLogoWindows />
-                <p>{os}</p>
+                <IoPrintOutline />
+                <p>{!!printer ? `${printer.brand} ${printer.model} (${printer.serial})` : 'Sin impresora asignada'}</p>
               </div>
             </div>
           </div>
           <div className="mt-4 flex gap-2 justify-between">
             <Link
-              href={`/equipos/${id}`}
+              href={`/asignaciones/${id}`}
               className="bg-green-600 text-white w-full justify-center flex items-center px-3 py-2 rounded-md cursor-pointer transition-all duration-300 hover:bg-green-700 font-semibold"
             >
               <span><IoEyeOutline /></span>
             </Link>
             <Link
-              href={`/equipos/${id}/editar`}
+              href={`/asignaciones/${id}/editar`}
               className="bg-blue-600 text-white w-full justify-center flex items-center px-3 py-2 rounded-md cursor-pointer transition-all duration-300 hover:bg-blue-700 font-semibold"
             >
               <span><IoCreateOutline /></span>
             </Link>
             <Link
-              href={`/equipos/${id}/eliminar`}
+              href={`/asignaciones/${id}/eliminar`}
               className="bg-red-600 text-white w-full justify-center flex items-center px-3 py-2 rounded-md cursor-pointer transition-all duration-300 hover:bg-red-700 font-semibold"
             >
               <span><IoTrashOutline /></span>

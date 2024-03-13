@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components";
-import { IoAlbumsOutline, IoDesktopOutline, IoLocationOutline, IoLockClosedOutline, IoPersonCircleOutline } from "react-icons/io5";
+import { IoAlbumsOutline, IoDesktopOutline, IoLocationOutline, IoLockClosedOutline, IoPersonCircleOutline, IoPrintOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { CiTextAlignLeft } from "react-icons/ci";
 import { MdOutlinePersonOutline } from "react-icons/md";
@@ -164,7 +164,7 @@ export const RegistrarAsignacionForm = () => {
         title="Impresora asignada (opcional)"
         type="select"
         id="priority"
-        icon={<IoDesktopOutline />}
+        icon={<IoPrintOutline />}
         {...register('printerId')}
         errors={errors}
         placeholder="Seleccione la impresora asignada"
