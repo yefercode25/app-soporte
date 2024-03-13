@@ -6,7 +6,7 @@ import { convertToISO } from "@/utils/dates";
 
 export const crearActividad = async (actividad: GestionarActividad) => {
   try {
-    const { createdAt, employeeId, priority, title, userId, observation, posponedAt, computerId } = actividad;
+    const { createdAt, employeeId, priority, title, userId, observation, posponedAt, computerId, printerId } = actividad;
     const isoDate = convertToISO(createdAt);
     
     const nuevaActividad = await prisma.activity.create({
@@ -18,7 +18,8 @@ export const crearActividad = async (actividad: GestionarActividad) => {
         userId,
         observation,
         posponedAt: posponedAt ? convertToISO(posponedAt) : null,
-        computerId: computerId || null
+        computerId: computerId || null,
+        printerId: printerId || null
       }
     });
 

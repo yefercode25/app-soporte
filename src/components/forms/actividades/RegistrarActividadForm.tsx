@@ -1,10 +1,10 @@
 'use client';
 
-import { crearActividad, listadoEquiposSelect, listadoFuncionariosSelect, listarFuncionarios } from '@/actions';
+import { crearActividad, listadoEquiposSelect, listadoFuncionariosSelect, listadoImpresorasSelect, listarFuncionarios } from '@/actions';
 import { crearActividadSchema } from '@/lib/yup-schemas';
 import { GestionarActividad } from '@/types';
 import { Input } from '@/components';
-import { IoAlbumsOutline, IoCalendarClearOutline, IoDesktopOutline, IoTicketOutline, IoTimerOutline } from 'react-icons/io5';
+import { IoAlbumsOutline, IoCalendarClearOutline, IoDesktopOutline, IoPrintOutline, IoTicketOutline, IoTimerOutline } from 'react-icons/io5';
 import { toaster } from '@/utils/toast';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -19,6 +19,7 @@ export const RegistrarActividadForm = () => {
   const [isSendingData, setIsSendingData] = useState<boolean>(false);
   const [listEnployees, setListEmployees] = useState<{ value: string, label: string }[]>([{ label: '', value: 'Sin opciones disponibles' }]);
   const [listComputers, setListComputers] = useState<{ value: string, label: string }[]>([{ label: '', value: 'Sin opciones disponibles' }]);
+  const [listPrinters, setListPrinters] = useState<{ value: string, label: string }[]>([{ label: '', value: 'Sin opciones disponibles' }]);
 
   const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm<GestionarActividad>({
     resolver: yupResolver(crearActividadSchema)
@@ -30,9 +31,11 @@ export const RegistrarActividadForm = () => {
     const getListaEmpleados = async () => {
       const listadoFuncionarios = await listadoFuncionariosSelect();
       const listadoEquipos = await listadoEquiposSelect();
+      const listadoImpresoras = await listadoImpresorasSelect();
 
       setListEmployees(listadoFuncionarios.data || []);
       setListComputers(listadoEquipos.data || []);
+      setListPrinters(listadoImpresoras.data || []);
     };
 
     getListaEmpleados();
@@ -126,7 +129,7 @@ export const RegistrarActividadForm = () => {
       <Input
         title="Funcionario que solicitó"
         type="select"
-        id="priority"
+        id="employeeId"
         icon={<IoAlbumsOutline />}
         {...register('employeeId')}
         errors={errors}
@@ -136,12 +139,22 @@ export const RegistrarActividadForm = () => {
       <Input
         title="Equipo relacionado (opcional)"
         type="select"
-        id="priority"
+        id="computerId"
         icon={<IoDesktopOutline />}
         {...register('computerId')}
         errors={errors}
         placeholder="Seleccione el equipo asociado a la actividad"
         selectOptions={listComputers}
+      />
+      <Input
+        title="Impresora relacionada (opcional)"
+        type="select"
+        id="printerId"
+        icon={<IoPrintOutline />}
+        {...register('printerId')}
+        errors={errors}
+        placeholder="Seleccione la impresora asociada a la actividad"
+        selectOptions={listPrinters}
       />
       <Input
         title="La tarea se pospone hasta (opcional)"
