@@ -6,6 +6,13 @@ import { fechaFormateada } from "@/utils/dates";
 import { notFound } from "next/navigation";
 import { IoBusinessOutline, IoCalendarOutline, IoDuplicateOutline, IoPersonOutline, IoRefreshOutline } from "react-icons/io5";
 import { Controls, SubActivyItem } from "@/components";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Ver Actividad | App Soporte",
+  description: "Visualiza la información de una actividad y sus subtareas asociadas."
+
+};
 
 export default async function VerActividadPage({ params }: PageProps) {
   const id = params?.id ?? "";
@@ -15,10 +22,8 @@ export default async function VerActividadPage({ params }: PageProps) {
     throw notFound();
   }
 
-  const getSubActividades = await listarSubActivities(id);
-
   const actividad = apiResponse.data;
-  const subActividades = getSubActividades.data;
+  const subActividades = apiResponse.data.SubActivity || [];
 
   return (
     <div>
@@ -82,6 +87,46 @@ export default async function VerActividadPage({ params }: PageProps) {
             </div>
           )}
         </div>
+      </div>
+      {actividad?.ActivityImage?.length > 0 && (
+        <div className="mt-10">
+          <div className="flex items-center gap-2">
+            <h2 className="text-xl font-bold">Fotográfias</h2>
+            <span className="bg-blue-600 font-semibold px-2 py-1 rounded-full text-white text-xs">{(actividad.ActivityImage)?.length || 0} registradas</span>
+          </div>
+
+          <div className="mt-4">
+            {actividad.ActivityImage?.length > 0 ? (
+              <div className="mt-2 flex items-center flex-wrap gap-2">
+                {actividad.ActivityImage?.map((subActividad) => (
+                  <div key={subActividad.id}>
+                    <Image
+                      alt={`Fotografía de la actividad ${actividad.title}`}
+                      src={subActividad.image.secureUrl || '/img/empty.svg'}
+                      width={300}
+                      height={250}
+                      className="rounded-md"
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="mt-5 flex flex-col items-center">
+                <Image src="/img/empty.svg" alt="No hay tareas asociadas" width={250} height={250} />
+                <p className="mt-3 font-semibold text-xl">No se han añadido imágenes</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      <div className="mt-5">
+        <Link 
+          href={`/actividades/${id}/tomar-foto`}
+          className="block bg-blue-600 text-white p-2 text-center rounded-md font-semibold cursor-pointer hover:bg-blue-700 transition-all"
+        >
+          Tomar fotografía
+        </Link>
       </div>
 
       <Controls returnLink="/actividades">

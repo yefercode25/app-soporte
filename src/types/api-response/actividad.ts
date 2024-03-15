@@ -1,4 +1,4 @@
-import { Funcionario } from ".";
+import { Equipo, Funcionario, Imagen, Impresora, SubActivity } from ".";
 
 export interface Actividad {
   id: string;
@@ -13,6 +13,14 @@ export interface Actividad {
   employeeId: string;
   employee: Funcionario;
   computerId?: string;
+  imagesId: null;
+  printerId: string;
+  computer: Equipo;
+  images: Imagen[];
+  printer: Impresora;
+  user: ActivityUser;
+  SubActivity: SubActivity[];
+  ActivityImage: ActivityImages[];
 }
 
 export type ActivityPriority = 'baja' | 'normal' | 'alta';
@@ -28,4 +36,18 @@ export interface ListadoActividades {
 export interface GrupoActividad {
   date: string;
   activities: Actividad[];
+}
+
+export interface ActivityUser {
+  id: string;
+  name: string;
+  lastName: string;
+}
+
+export interface ActivityImages {
+  id: string;
+  activityId: string;
+  imageId: string;
+  activity: Actividad;
+  image: Imagen;
 }

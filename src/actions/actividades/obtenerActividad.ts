@@ -10,7 +10,25 @@ export const obtenerActividad = async (id: string) => {
   try {
     const actividad = await prisma.activity.findUnique({
       where: { id },
-      include: { employee: true }
+      include: {
+        employee: true,
+        computer: true,
+        printer: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+          }
+        },
+        SubActivity: true,
+        ActivityImage: {
+          include: {
+            activity: true,
+            image: true
+          }
+        },
+      }
     });
 
     if (!actividad || actividad.userId !== session?.user?.id) {

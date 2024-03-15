@@ -21,16 +21,13 @@ export const AsignacionItem = ({ asignacion }: Props) => {
               </h2>
               <div className="flex items-center gap-2">
                 <p className={`text-xs capitalize px-2 py-[3px] text-white rounded-full ${status === 'vigente' ? 'bg-green-600' : 'bg-red-600'}`}>{status}</p>
+                <p className={`text-xs capitalize px-2 py-[3px] text-white rounded-full bg-blue-600`}>{location}</p>
               </div>
             </div>
             <div className="text-xs flex items-center flex-wrap gap-2">
               <div className="flex items-center gap-1 capitalize">
-                <IoLocationOutline />
-                <p>{location}</p>
-              </div>
-              <div className="flex items-center gap-1 capitalize">
                 <IoDesktopOutline />
-                <p>{`${computer.brand} ${computer.model} (${computer.serial})`}</p>
+                <p>{!!computer ? `${computer.brand} ${computer.model} (${computer.serial})` : 'Sin computador asignado'}</p>
               </div>
               <div className="flex items-center gap-1 capitalize">
                 <IoPrintOutline />

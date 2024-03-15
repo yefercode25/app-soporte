@@ -25,12 +25,22 @@ model Activity {
   printerId   String?
   computerId  String?
 
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  employee    Employee?     @relation(fields: [employeeId], references: [id])
-  images      Image?        @relation(fields: [imagesId], references: [id])
-  printer     Printer?      @relation(fields: [printerId], references: [id])
-  computer    Computer?     @relation(fields: [computerId], references: [id])
-  SubActivity SubActivity[]
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employee      Employee?       @relation(fields: [employeeId], references: [id])
+  images        Image?          @relation(fields: [imagesId], references: [id])
+  printer       Printer?        @relation(fields: [printerId], references: [id])
+  computer      Computer?       @relation(fields: [computerId], references: [id])
+  SubActivity   SubActivity[]
+  ActivityImage ActivityImage[]
+}
+
+model ActivityImage {
+  id         String @id @default(cuid())
+  activityId String
+  imageId    String
+
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  image    Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
 }
 
 model SubActivity {
@@ -111,9 +121,10 @@ model Image {
   cloudinaryId String
   secureUrl    String
 
-  Printer  Printer[]
-  Computer Computer[]
-  Activity Activity[]
+  Printer       Printer[]
+  Computer      Computer[]
+  Activity      Activity[]
+  ActivityImage ActivityImage[]
 }
 
 // Auth New Models
